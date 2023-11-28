@@ -1,0 +1,39 @@
+# rta-svc
+
+@apiurl = http://localhost:8090
+# @apiurl = https://rta-svc.beta.zerodhafundhouse.com
+# @apiurl = https://rta-svc.prod.zerodhafundhouse.com
+@version = v1
+
+###
+# @name Health check
+GET {{apiurl}}/health
+
+###
+# @name Get onboarding
+GET {{apiurl}}/{{version}}/api/company/v1/onboarding?emailId=umang.tiwary13@gmail.com
+
+###
+# @name Post onboarding
+POST {{apiurl}}/{{version}}/api/company/v1/onboarding
+Content-Type: application/json
+
+{
+    "emailId": "umang@gmail.com"
+}
+
+###
+# @name Complete onboarding
+POST {{apiurl}}/{{version}}/api/company/v1/onboarding
+Content-Type: application/json
+
+{
+    "emailId": "umang@gmail.com",
+    "companyName": "smallcase",
+    "companyLogo": {
+        "imageUrl": "https://google.com",
+        "imageHeight": 100,
+        "imageWidth": 100,
+        "logoScalingFactor": 2
+    }
+}
