@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../lib/db');
 
-const Business = db.define(
-  'Business',
+const CompanyUser = db.define(
+  'CompanyUser',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,27 +10,25 @@ const Business = db.define(
       primaryKey: true,
       allowNull: false,
     },
-    mobileNumber: {
+    companyId: {
       type: DataTypes.STRING(64),
-      field: 'mobile_number',
-      unique: true,
+      field: 'company_id',
       allowNull: false,
     },
-    businessName: {
-      type: DataTypes.STRING(256),
-      field: 'business_name',
+    userId: {
+      type: DataTypes.STRING(64),
+      field: 'user_id',
+      allowNull: false,
     },
-    businessWebsiteLink: {
-      type: DataTypes.STRING(128),
-      field: 'business_website_link',
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_admin',
     },
-    userName: {
-      type: DataTypes.STRING(128),
-      filed: 'user_name',
-    },
-    emailId: {
-      type: DataTypes.STRING(128),
-      field: 'email_id',
+    status: {
+      type: DataTypes.STRING(64),
+      field: 'status',
+      allowNull: false,
+      defaultValue: 'NOT_APPROVED',
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -46,14 +44,12 @@ const Business = db.define(
     },
   },
   {
-    tableName: 'business_details',
+    tableName: 'company_user',
     timestamps: true,
     underscored: true,
     version: true,
-    indexes: [
-      { name: 'business_mobile_idx', fields: ['mobile_number'], unique: true },
-    ],
+    indexes: [],
   }
 );
 
-module.exports = Business;
+module.exports = CompanyUser;

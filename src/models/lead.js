@@ -1,26 +1,36 @@
 const { DataTypes } = require('sequelize');
 const db = require('../../lib/db');
 
-const User = db.define(
-  'User',
+const Lead = db.define(
+  'Lead',
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    userId: {
+    mobileNumber: {
       type: DataTypes.STRING(64),
-      field: 'user_id',
+      field: 'mobile_number',
       unique: true,
       allowNull: false,
     },
+    businessName: {
+      type: DataTypes.STRING(256),
+      field: 'business_name',
+    },
+    businessWebsiteLink: {
+      type: DataTypes.STRING(128),
+      field: 'business_website_link',
+    },
+    userName: {
+      type: DataTypes.STRING(128),
+      filed: 'user_name',
+    },
     emailId: {
-      type: DataTypes.STRING(64),
+      type: DataTypes.STRING(128),
       field: 'email_id',
-      unique: true,
-      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
@@ -36,16 +46,14 @@ const User = db.define(
     },
   },
   {
-    tableName: 'user',
+    tableName: 'business_details',
     timestamps: true,
     underscored: true,
     version: true,
     indexes: [
-      { name: 'user_idx', fields: ['user_id'], unique: true },
-      { name: 'company_idx', fields: ['company_id'], unique: true },
-      { name: 'email_idx', fields: ['email_id'], unique: true },
+      { name: 'business_mobile_idx', fields: ['mobile_number'], unique: true },
     ],
   }
 );
 
-module.exports = User;
+module.exports = Lead;

@@ -1,6 +1,6 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { companyService } = require('../services');
+const { userService } = require('../services');
 
 const getUserSchema = joi.object({
   emailId: joi.string().trim().required(),
@@ -30,7 +30,7 @@ async function getUser(req) {
       invalidRequest.message
     );
   }
-  const user = await companyService.getUser({
+  const user = await userService.getUser({
     emailId: validRequestData.emailId,
   });
   return user || {};
@@ -49,14 +49,14 @@ async function createOrUpdateUser(req) {
       invalidRequest.message
     );
   }
-  const user = await companyService.getUser({
+  const user = await userService.getUser({
     emailId: validRequestData.emailId,
   });
   if (!user) {
-    return companyService.createUser(validRequestData);
+    return userService.createUser(validRequestData);
   }
   if (validRequestData.companyName !== '' || !validRequestData.companyLogo) {
-    await companyService.updateUser(user, validRequestData);
+    await userService.updateUser(user, validRequestData);
   }
   return user;
 }

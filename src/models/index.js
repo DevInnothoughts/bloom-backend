@@ -1,11 +1,15 @@
 const User = require('./user');
-const Business = require('./business');
+const Lead = require('./lead');
 const Form = require('./form');
 const FormResponse = require('./formResponse');
+const Company = require('./company');
+const CompanyUser = require('./companyUser');
 
 module.exports = {
   User,
-  Business,
+  Lead,
   Form,
   FormResponse,
+  Company,
+  CompanyUser,
 };
