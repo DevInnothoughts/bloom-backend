@@ -76,3 +76,8 @@ mysql> SHOW COLUMNS FROM user;
 +--------------+--------------+------+-----+---------+----------------+
 9 rows in set (0.01 sec)
 ```
+
+```bash
+mysql> ALTER TABLE <table_name> ADD COLUMN <column_name> <column_type>;
+mysql> ALTER TABLE <table_name> DROP COLUMN <column_name>;
+```

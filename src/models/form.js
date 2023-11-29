@@ -20,12 +20,12 @@ const Form = db.define(
       field: 'company_id',
     },
     formName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(64),
       field: 'form_name',
     },
-    businessWebsiteLink: {
-      type: DataTypes.STRING,
-      field: 'business_website_link',
+    googlePageId: {
+      type: DataTypes.STRING(128),
+      field: 'google_page_id',
     },
     aboutForm: {
       type: DataTypes.BLOB,

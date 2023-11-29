@@ -6,7 +6,7 @@ async function getUser({ emailId }) {
     where: { emailId },
   });
   if (user && user.companyLogo) {
-    user.companyLogo = Buffer.from(user.companyLogo).toJSON();
+    user.companyLogo = JSON.parse(user.companyLogo.toString());
   }
   return user;
 }

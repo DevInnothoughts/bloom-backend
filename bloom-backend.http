@@ -3,7 +3,7 @@
 @apiurl = http://localhost:8090
 # @apiurl = https://rta-svc.beta.zerodhafundhouse.com
 # @apiurl = https://rta-svc.prod.zerodhafundhouse.com
-@version = v1
+@version = v2
 
 ###
 # @name Health check
@@ -37,3 +37,32 @@ Content-Type: application/json
         "logoScalingFactor": 2
     }
 }
+
+###
+# @name Init form
+POST {{apiurl}}/{{version}}/api/form/v1/init
+Content-Type: application/json
+
+{
+    "companyId": "12321-213123-123213"
+}
+
+###
+# @name Update form
+POST {{apiurl}}/{{version}}/api/form/v1/update
+Content-Type: application/json
+
+{
+    "formId": "VN7FDGJ682QDAJ7B0W385",
+    "companyId": "12321-213123-123213",
+    "businessMetaData": { "name": "smallcase" },
+    "formName": "Test form",
+    "googlePageId": "GPID-1",
+    "aboutForm": { "description": "Test form description" },
+    "formContent": { "a": "b" },
+    "formTheme": { "colorCode": "#ffff" }
+}
+
+###
+# @name Get form
+GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=0ZNXPK8IDJD2U7ZLYI0DF

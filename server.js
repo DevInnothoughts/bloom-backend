@@ -3,7 +3,7 @@ const cors = require('cors');
 const { applicationLogger: logger, requestLogger } = require('./lib/logger');
 const config = require('./lib/config');
 const db = require('./lib/db');
-const routes = require('./src/routes/v1');
+const routes = require('./src/routes/v2');
 
 const app = express();
 app.use(
@@ -50,7 +50,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ message: 'From bloom backend' });
 });
-app.use('/v1', routes);
+app.use('/v2', routes);
 app.get('/health', async (req, res) => {
   try {
     await db.authenticate(); // tries to run SELECT 1+1 AS result
