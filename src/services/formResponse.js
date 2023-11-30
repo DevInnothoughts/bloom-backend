@@ -1,8 +1,9 @@
 // const { FormResponse } = require('../models');
 
-async function migrate(payload = {}) {
+async function migrate() {
+  return '';
 }
 
 module.exports = {
-    migrate
-}
+  migrate,
+};

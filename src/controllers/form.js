@@ -1,6 +1,10 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { formService, companyService, formResponseService } = require('../services');
+const {
+  formService,
+  companyService,
+  formResponseService,
+} = require('../services');
 
 const initFormSchema = joi.object({
   companyId: joi.string().trim().optional().allow('', null),

@@ -6,8 +6,8 @@
   "scripts": {
     "test": "export TZ=utc && npm run lint && npm run format:check",
     "start": "node index.js",
-    "lint": "eslint . --ignore-pattern test/",
-    "lint:fix": "eslint . --ignore-pattern test/ --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write \"./**/*.{js,json}\"",
     "format:check": "prettier --check \"./**/*.{js,json}\"",
     "codefix": "npm run lint:fix && npm run format",

@@ -20,9 +20,13 @@ const Lead = db.define(
       type: DataTypes.STRING(256),
       field: 'business_name',
     },
-    businessWebsiteLink: {
+    businessPlaceId: {
       type: DataTypes.STRING(128),
       field: 'business_website_link',
+    },
+    businessAddress: {
+      type: DataTypes.STRING(512),
+      field: 'business_address',
     },
     userName: {
       type: DataTypes.STRING(128),
@@ -51,7 +55,7 @@ const Lead = db.define(
     underscored: true,
     version: true,
     indexes: [
-      { name: 'business_mobile_idx', fields: ['mobile_number'], unique: true },
+      { name: 'lead_mobile_idx', fields: ['mobile_number'], unique: true },
     ],
   }
 );
