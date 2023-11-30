@@ -15,6 +15,7 @@ const formRouter = express.Router();
 formRouter.post('/v1/init', expressRoute(formController.initForm));
 formRouter.post('/v1/update', expressRoute(formController.updateForm));
 formRouter.get('/v1/getForm', expressRoute(formController.getForm));
+formRouter.get('/v1/migrate', expressRoute(formController.migrateResponse));
 r.use('/api/form', formRouter);
 
 module.exports = r;

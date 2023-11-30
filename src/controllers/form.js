@@ -1,6 +1,6 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { formService, companyService } = require('../services');
+const { formService, companyService, formResponseService } = require('../services');
 
 const initFormSchema = joi.object({
   companyId: joi.string().trim().optional().allow('', null),
@@ -19,6 +19,11 @@ const updateFormSchema = joi.object({
 
 const getFormSchema = joi.object({
   formId: joi.string().trim().required(),
+});
+
+const migrateSchema = joi.object({
+  formId: joi.string().trim().required(),
+  businessId: joi.string().trim().optional().allow('', null),
 });
 
 async function initForm(req) {
@@ -90,8 +95,24 @@ async function getForm(req) {
   };
 }
 
+async function migrateResponse(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    migrateSchema.validate({
+      formId: req.body.formId,
+      businessId: req.body.businessId,
+    });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_0005',
+      invalidRequest.message
+    );
+  }
+  await formResponseService.migrate(validRequestData);
+}
+
 module.exports = {
   initForm,
   updateForm,
   getForm,
+  migrateResponse,
 };
