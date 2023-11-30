@@ -66,3 +66,28 @@ Content-Type: application/json
 ###
 # @name Get form
 GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=0ZNXPK8IDJD2U7ZLYI0DF
+
+
+###
+# @name Create Lead
+POST {{apiurl}}/{{version}}/api/lead/v1/createLead
+Content-Type: application/json
+
+{
+    "mobileNumber": "9089898891"
+}
+
+
+###
+# @name Update Lead
+POST {{apiurl}}/{{version}}/api/lead/v1/updateLead
+Content-Type: application/json
+
+{
+    "mobileNumber": "9089898891",
+    "businessName": "Umang Pet Store",
+    "businessPlaceId": "hjashdajdh144787187XD",
+    "businessAddress": "Old Airport Road, Bengaluru",
+    "userName": "Umang Tiwary",
+    "emailId": "umang@gmail.com"
+}
