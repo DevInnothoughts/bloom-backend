@@ -26,18 +26,8 @@ async function createLead(req) {
       `Validation error: ${invalidRequest.message}`
     );
   }
-  const lead = await leadService.getLead({
-    mobileNumber: validRequestData.mobileNumber,
-  });
-  
-  if (lead) {
-    throw new generalExceptions.ValidationError(
-      'BLAPI_008',
-      `Lead already exists: ${invalidRequest.message}`
-    );
-  }
-  const newLead = await leadService.createLead(validRequestData);
-  return newLead.id;
+
+  await leadService.createOrUpdateLead(validRequestData);
 }
 
 async function updateLead(req) {
@@ -56,20 +46,8 @@ async function updateLead(req) {
       `Validation error: ${invalidRequest.message}`
     );
   }
-  const lead = await leadService.getLead({
-    mobileNumber: validRequestData.mobileNumber,
-  });
 
-  if (!lead) {
-    throw new generalExceptions.ResourceNotFound(
-      'BLAPI_009',
-      'No lead found for given mobile number'
-    );
-  }
-
-  const updatedLead = await leadService.updateLead(lead, validRequestData);
-
-  return updatedLead;
+  await leadService.createOrUpdateLead(validRequestData);
 }
 
 module.exports = {

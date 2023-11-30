@@ -55,7 +55,7 @@ const Lead = db.define(
     underscored: true,
     version: true,
     indexes: [
-      { name: 'business_mobile_idx', fields: ['mobile_number'], unique: true },
+      { name: 'lead_mobile_idx', fields: ['mobile_number'], unique: true },
     ],
   }
 );

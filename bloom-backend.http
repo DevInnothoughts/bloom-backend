@@ -74,7 +74,7 @@ POST {{apiurl}}/{{version}}/api/lead/v1/createLead
 Content-Type: application/json
 
 {
-    "mobileNumber": "9089898891"
+    "mobileNumber": "9089898897"
 }
 
 
@@ -84,8 +84,8 @@ POST {{apiurl}}/{{version}}/api/lead/v1/updateLead
 Content-Type: application/json
 
 {
-    "mobileNumber": "9089898891",
-    "businessName": "Umang Pet Store",
+    "mobileNumber": "9089898897",
+    "businessName": "Umang Shoe Store",
     "businessPlaceId": "hjashdajdh144787187XD",
     "businessAddress": "Old Airport Road, Bengaluru",
     "userName": "Umang Tiwary",
