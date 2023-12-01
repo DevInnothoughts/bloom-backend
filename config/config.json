@@ -1,9 +1,0 @@
-{
-  "development": {
-    "username": "bloom-user",
-    "password": "bloompassword123@",
-    "database": "bloomlocaldb",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
-}

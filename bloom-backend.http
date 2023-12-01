@@ -11,31 +11,17 @@ GET {{apiurl}}/health
 
 ###
 # @name Get onboarding
-GET {{apiurl}}/{{version}}/api/company/v1/onboarding?emailId=umang.tiwary13@gmail.com
+GET {{apiurl}}/{{version}}/api/user/v1/onboarding?emailId=umang5@gmail.com
 
 ###
 # @name Post onboarding
-POST {{apiurl}}/{{version}}/api/company/v1/onboarding
+POST {{apiurl}}/{{version}}/api/user/v1/onboarding
 Content-Type: application/json
 
 {
-    "emailId": "umang@gmail.com"
-}
-
-###
-# @name Complete onboarding
-POST {{apiurl}}/{{version}}/api/company/v1/onboarding
-Content-Type: application/json
-
-{
-    "emailId": "umang@gmail.com",
-    "companyName": "smallcase",
-    "companyLogo": {
-        "imageUrl": "https://google.com",
-        "imageHeight": 100,
-        "imageWidth": 100,
-        "logoScalingFactor": 2
-    }
+    "emailId": "umang5@gmail.com",
+    "name": "Umang Tiwary",
+    "avatarUrl": "www.google.com"
 }
 
 ###
@@ -91,3 +77,20 @@ Content-Type: application/json
     "userName": "Umang Tiwary",
     "emailId": "umang@gmail.com"
 }
+
+
+###
+
+
+# @name Create Company
+POST {{apiurl}}/{{version}}/api/company/v1/createCompany
+Content-Type: application/json
+
+{
+    "userId": "8bda2548-2c1c-400c-bb9a-b76952411ed3",
+    "companyName": "Umang Shoe Stores ASDA"
+}
+
+###
+# @name Get Company
+GET {{apiurl}}/{{version}}/api/company/v1/getCompany?companyId=202f68a-f242-4f93-a6ea-7c9126fd67b3

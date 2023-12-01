@@ -3,6 +3,7 @@ const {
   userController,
   formController,
   leadController,
+  companyController,
 } = require('../controllers');
 const { expressRoute } = require('../../lib/utils');
 
@@ -13,7 +14,7 @@ userRouter.post(
   expressRoute(userController.createOrUpdateUser)
 );
 const r = express.Router();
-r.use('/api/company', userRouter);
+r.use('/api/user', userRouter);
 
 const formRouter = express.Router();
 formRouter.post('/v1/init', expressRoute(formController.initForm));
@@ -25,5 +26,17 @@ const leadRouter = express.Router();
 leadRouter.post('/v1/createLead', expressRoute(leadController.createLead));
 leadRouter.post('/v1/updateLead', expressRoute(leadController.updateLead));
 r.use('/api/lead', leadRouter);
+
+const companyRouter = express.Router();
+companyRouter.get('/v1/getCompany', expressRoute(companyController.getCompany));
+companyRouter.get(
+  '/v1/getCompanyByUserId',
+  expressRoute(companyController.getCompanyByUserId)
+);
+companyRouter.post(
+  '/v1/createCompany',
+  expressRoute(companyController.createOrUpdateCompany)
+);
+r.use('/api/company', companyRouter);
 
 module.exports = r;

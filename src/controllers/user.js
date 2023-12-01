@@ -8,16 +8,15 @@ const getUserSchema = joi.object({
 
 const createOrUpdateUserSchema = joi.object({
   emailId: joi.string().trim().required(),
-  companyName: joi.string().trim().optional().allow('', null),
-  companyLogo: joi
-    .object({
-      imageUrl: joi.string().trim(),
-      imageHeight: joi.number(),
-      imageWidth: joi.number(),
-      logoScalingFactor: joi.number(),
-    })
-    .optional(),
+  name: joi.string().trim().required(),
+  avatarUrl: joi.string().trim().optional().allow('', null),
 });
+
+// Google Login -> On FE Server -> Email, Name, DPURL
+// Using Email, Try to get User from DB in FE Server || To Protect
+// If User Not Found, Create User and Create Company Using API, Mark as Admin || To Protect
+// If User & Company Found, Create a JWT Token using DB user details
+// If User Found, But No Company Associated, Only Create Company
 
 async function getUser(req) {
   const { value: validRequestData, error: invalidRequest } =
@@ -40,8 +39,8 @@ async function createOrUpdateUser(req) {
   const { value: validRequestData, error: invalidRequest } =
     createOrUpdateUserSchema.validate({
       emailId: req.body.emailId,
-      companyName: req.body.companyName,
-      companyLogo: req.body.companyLogo,
+      name: req.body.name,
+      avatarUrl: req.body.avatarUrl,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -52,12 +51,11 @@ async function createOrUpdateUser(req) {
   const user = await userService.getUser({
     emailId: validRequestData.emailId,
   });
+
   if (!user) {
     return userService.createUser(validRequestData);
   }
-  if (validRequestData.companyName !== '' || !validRequestData.companyLogo) {
-    await userService.updateUser(user, validRequestData);
-  }
+
   return user;
 }
 

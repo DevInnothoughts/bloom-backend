@@ -22,6 +22,15 @@ const User = db.define(
       unique: true,
       allowNull: false,
     },
+    name: {
+      type: DataTypes.STRING(128),
+      field: 'name',
+      allowNull: false,
+    },
+    avatarUrl: {
+      type: DataTypes.STRING(256),
+      field: 'avatar_url',
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at',
@@ -42,7 +51,6 @@ const User = db.define(
     version: true,
     indexes: [
       { name: 'user_idx', fields: ['user_id'], unique: true },
-      { name: 'company_idx', fields: ['company_id'], unique: true },
       { name: 'email_idx', fields: ['email_id'], unique: true },
     ],
   }
