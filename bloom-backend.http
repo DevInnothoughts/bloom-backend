@@ -39,12 +39,12 @@ POST {{apiurl}}/{{version}}/api/form/v1/update
 Content-Type: application/json
 
 {
-    "formId": "VN7FDGJ682QDAJ7B0W385",
+    "formId": "T4YTG5KA88IEL4PB4TJVR",
     "companyId": "12321-213123-123213",
     "businessMetaData": { "name": "smallcase" },
     "formName": "Test form",
     "googlePageId": "GPID-1",
-    "aboutForm": { "description": "Test form description" },
+    "aboutForm": "This is feedback form our small restaurant in Indiranagar, Bangalore",
     "formContent": { "a": "b" },
     "formTheme": { "colorCode": "#ffff" }
 }
@@ -52,7 +52,6 @@ Content-Type: application/json
 ###
 # @name Get form
 GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=0ZNXPK8IDJD2U7ZLYI0DF
-
 
 ###
 # @name Create Lead
@@ -62,7 +61,6 @@ Content-Type: application/json
 {
     "mobileNumber": "9089898897"
 }
-
 
 ###
 # @name Update Lead
@@ -78,10 +76,7 @@ Content-Type: application/json
     "emailId": "umang@gmail.com"
 }
 
-
 ###
-
-
 # @name Create Company
 POST {{apiurl}}/{{version}}/api/company/v1/createCompany
 Content-Type: application/json
@@ -94,3 +89,30 @@ Content-Type: application/json
 ###
 # @name Get Company
 GET {{apiurl}}/{{version}}/api/company/v1/getCompany?companyId=202f68a-f242-4f93-a6ea-7c9126fd67b3
+
+###
+# @name Save form response
+POST {{apiurl}}/{{version}}/api/signup/v2/response
+Content-Type: application/json
+
+{
+    "responses": {
+        "ABC": {
+            "isUserText": true,
+            "questionTitle": "How did you like the service?",
+            "responses": ["Food is amazing", "DJ was top-notch"]
+        },
+        "ABD": {
+            "isUserText": false,
+            "questionTitle": "How much rating would you like to give?",
+            "rating": "4.5"
+        }
+    },
+    "formId": "T4YTG5KA88IEL4PB4TJVR",
+    "companyId": "ABC",
+    "queryParams": {}
+}
+
+###
+# @name Get generated review
+GET {{apiurl}}/{{version}}/api/signup/v1/review?responseId=ed7e8d0f-9145-4bf0-b9e1-bd51849a7989

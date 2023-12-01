@@ -16,7 +16,7 @@ const updateFormSchema = joi.object({
   businessMetaData: joi.object().optional().allow(null),
   formName: joi.string().trim().optional().allow('', null),
   googlePageId: joi.string().trim().optional().allow('', null),
-  aboutForm: joi.object().optional().allow(null),
+  aboutForm: joi.string().optional().allow('', null),
   formContent: joi.object().optional().allow(null),
   formTheme: joi.object().optional().allow(null),
 });

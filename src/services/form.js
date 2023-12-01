@@ -16,19 +16,20 @@ async function initForm(payload = {}) {
   return newForm;
 }
 
+// TODO: What about this?
 async function updateForm(payload = {}) {
   const updates = {};
-  if (payload.businessMetaData) {
-    updates.businessMetaData = JSON.stringify(payload.businessMetaData);
-  }
+  // if (payload.businessMetaData) {
+  //   updates.businessMetaData = JSON.stringify(payload.businessMetaData);
+  // }
   if (payload.formName) {
     updates.formName = payload.formName;
   }
-  if (payload.googlePageId) {
-    updates.googlePageId = payload.googlePageId;
-  }
+  // if (payload.googlePageId) {
+  //   updates.googlePageId = payload.googlePageId;
+  // }
   if (payload.aboutForm) {
-    updates.aboutForm = JSON.stringify(payload.aboutForm);
+    updates.aboutForm = payload.aboutForm;
   }
   if (payload.formContent) {
     updates.formContent = JSON.stringify(payload.formContent);
@@ -46,16 +47,13 @@ async function updateForm(payload = {}) {
   }
 }
 
-async function getForm(payload = {}) {
+async function getForm({ formId }) {
   const form = await Form.findOne({
-    where: { formId: payload.formId },
+    where: { formId },
     raw: true,
   });
   if (!form) {
     return form;
-  }
-  if (form.aboutForm) {
-    form.aboutForm = JSON.parse(form.aboutForm.toString());
   }
   if (form.formContent) {
     form.formContent = JSON.parse(form.formContent.toString());

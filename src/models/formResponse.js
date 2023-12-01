@@ -18,12 +18,9 @@ const FormResponse = db.define(
       type: DataTypes.STRING(64),
       field: 'form_id',
     },
-    businessId: {
+    companyId: {
       type: DataTypes.STRING(64),
-      field: 'business_id',
-    },
-    response: {
-      type: DataTypes.BLOB,
+      field: 'company_id',
     },
     review: {
       type: DataTypes.BLOB,

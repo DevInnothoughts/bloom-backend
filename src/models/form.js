@@ -23,6 +23,10 @@ const Form = db.define(
       type: DataTypes.STRING(64),
       field: 'form_name',
     },
+    aboutForm: {
+      type: DataTypes.STRING(512),
+      field: 'about_form',
+    },
     formContent: {
       type: DataTypes.BLOB,
       field: 'form_content',

@@ -4,6 +4,7 @@ const {
   formController,
   leadController,
   companyController,
+  formResponseController,
 } = require('../controllers');
 const { expressRoute } = require('../../lib/utils');
 
@@ -39,5 +40,16 @@ companyRouter.post(
   expressRoute(companyController.createOrUpdateCompany)
 );
 r.use('/api/company', companyRouter);
+
+const formResponseRouter = express.Router();
+formResponseRouter.post(
+  '/v2/response',
+  expressRoute(formResponseController.saveResponse)
+);
+formResponseRouter.get(
+  '/v1/review',
+  expressRoute(formResponseController.getGeneratedReview)
+);
+r.use('/api/signup', formResponseRouter);
 
 module.exports = r;

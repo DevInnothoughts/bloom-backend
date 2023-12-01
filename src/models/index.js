@@ -4,6 +4,7 @@ const Form = require('./form');
 const FormResponse = require('./formResponse');
 const Company = require('./company');
 const CompanyUser = require('./companyUser');
+const GeneratedReview = require('./generatedReview');
 
 module.exports = {
   User,
@@ -12,4 +13,5 @@ module.exports = {
   FormResponse,
   Company,
   CompanyUser,
+  GeneratedReview,
 };
