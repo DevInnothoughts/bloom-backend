@@ -1,12 +1,8 @@
-async function getReview(req){
+function getReview() {}
 
-}
-
-async function saveResponse(req){
-    
-}
+function saveResponse() {}
 
 module.exports = {
-    getReview,
-    saveResponse,
-}
+  getReview,
+  saveResponse,
+};
