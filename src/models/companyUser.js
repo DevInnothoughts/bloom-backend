@@ -48,7 +48,13 @@ const CompanyUser = db.define(
     timestamps: true,
     underscored: true,
     version: true,
-    indexes: [],
+    indexes: [
+      {
+        unique: true,
+        fields: ['user_id', 'company_id'],
+        name: 'user_company_idx',
+      },
+    ],
   }
 );
 

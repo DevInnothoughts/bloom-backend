@@ -19,6 +19,7 @@ const Company = db.define(
     companyName: {
       type: DataTypes.STRING(256),
       field: 'company_name',
+      allowNull: false,
     },
     companyLogo: {
       type: DataTypes.BLOB,

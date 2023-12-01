@@ -23,14 +23,6 @@ const Form = db.define(
       type: DataTypes.STRING(64),
       field: 'form_name',
     },
-    googlePageId: {
-      type: DataTypes.STRING(128),
-      field: 'google_page_id',
-    },
-    aboutForm: {
-      type: DataTypes.BLOB,
-      field: 'about_form',
-    },
     formContent: {
       type: DataTypes.BLOB,
       field: 'form_content',
