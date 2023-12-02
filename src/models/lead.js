@@ -22,7 +22,7 @@ const Lead = db.define(
     },
     businessPlaceId: {
       type: DataTypes.STRING(128),
-      field: 'business_website_link',
+      field: 'business_place_id',
     },
     businessAddress: {
       type: DataTypes.STRING(512),

@@ -39,11 +39,10 @@ POST {{apiurl}}/{{version}}/api/form/v1/update
 Content-Type: application/json
 
 {
-    "formId": "T4YTG5KA88IEL4PB4TJVR",
-    "companyId": "12321-213123-123213",
-    "businessMetaData": { "name": "smallcase" },
+    "formId": "OBKHX481Q6YY20WHHWWZ7",
+    "companyId": "cc25ca57-4212-4f26-a959-274704475742",
     "formName": "Test form",
-    "googlePageId": "GPID-1",
+    "googlePlaceId": "GPID-1",
     "aboutForm": "This is feedback form our small restaurant in Indiranagar, Bangalore",
     "formContent": { "a": "b" },
     "formTheme": { "colorCode": "#ffff" }
@@ -51,7 +50,7 @@ Content-Type: application/json
 
 ###
 # @name Get form
-GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=0ZNXPK8IDJD2U7ZLYI0DF
+GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=OBKHX481Q6YY20WHHWWZ7
 
 ###
 # @name Create Lead
@@ -97,22 +96,26 @@ Content-Type: application/json
 
 {
     "responses": {
-        "ABC": {
+        "1": {
             "isUserText": true,
             "questionTitle": "How did you like the service?",
             "responses": ["Food is amazing", "DJ was top-notch"]
         },
-        "ABD": {
+        "2": {
             "isUserText": false,
             "questionTitle": "How much rating would you like to give?",
-            "rating": "4.5"
+            "rating": "4"
         }
     },
-    "formId": "T4YTG5KA88IEL4PB4TJVR",
-    "companyId": "ABC",
-    "queryParams": {}
+    "formId": "OBKHX481Q6YY20WHHWWZ7",
+    "companyId": "cc25ca57-4212-4f26-a959-274704475742",
+    "queryParams": {
+        "set" : "A",
+        "user": "ZXCZC",
+        "XVC" : "91959595"
+    }
 }
 
 ###
 # @name Get generated review
-GET {{apiurl}}/{{version}}/api/signup/v1/review?responseId=ed7e8d0f-9145-4bf0-b9e1-bd51849a7989
+GET {{apiurl}}/{{version}}/api/signup/v1/review?responseId=73ee901a-3416-4225-867c-de4ecef2ad05

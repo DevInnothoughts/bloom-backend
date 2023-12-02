@@ -20,7 +20,7 @@ const saveResponseSchema = joi.object({
     .required(),
   companyId: joi.string().trim().required(),
   formId: joi.string().trim().required(),
-  queryParams: joi.object().pattern(joi.string(), joi.object()).required(),
+  queryParams: joi.object().optional().allow(null),
 });
 
 const getGeneratedReviewSchema = joi.object({
