@@ -11,11 +11,11 @@ GET {{apiurl}}/health
 
 ###
 # @name Get onboarding
-GET {{apiurl}}/{{version}}/api/user/v1/onboarding?emailId=umang5@gmail.com
+GET {{apiurl}}/{{version}}/api/user/v1/get?emailId=umang5@gmail.com
 
 ###
 # @name Post onboarding
-POST {{apiurl}}/{{version}}/api/user/v1/onboarding
+POST {{apiurl}}/{{version}}/api/user/v1/create
 Content-Type: application/json
 
 {
@@ -30,7 +30,7 @@ POST {{apiurl}}/{{version}}/api/form/v1/init
 Content-Type: application/json
 
 {
-    "companyId": "12321-213123-123213"
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64"
 }
 
 ###
@@ -39,9 +39,9 @@ POST {{apiurl}}/{{version}}/api/form/v1/update
 Content-Type: application/json
 
 {
-    "formId": "OBKHX481Q6YY20WHHWWZ7",
-    "companyId": "cc25ca57-4212-4f26-a959-274704475742",
-    "formName": "Test form",
+    "formId": "YB4ZHKK8GNXEQHLYUZ20P",
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
+    "formName": "F&B feedback form",
     "googlePlaceId": "GPID-1",
     "aboutForm": "This is feedback form our small restaurant in Indiranagar, Bangalore",
     "formContent": { "a": "b" },
@@ -50,11 +50,11 @@ Content-Type: application/json
 
 ###
 # @name Get form
-GET {{apiurl}}/{{version}}/api/form/v1/getForm?formId=OBKHX481Q6YY20WHHWWZ7
+GET {{apiurl}}/{{version}}/api/form/v1/get?formId=OBKHX481Q6YY20WHHWWZ7
 
 ###
 # @name Create Lead
-POST {{apiurl}}/{{version}}/api/lead/v1/createLead
+POST {{apiurl}}/{{version}}/api/lead/v1/create
 Content-Type: application/json
 
 {
@@ -63,7 +63,7 @@ Content-Type: application/json
 
 ###
 # @name Update Lead
-POST {{apiurl}}/{{version}}/api/lead/v1/updateLead
+POST {{apiurl}}/{{version}}/api/lead/v1/update
 Content-Type: application/json
 
 {
@@ -77,21 +77,21 @@ Content-Type: application/json
 
 ###
 # @name Create Company
-POST {{apiurl}}/{{version}}/api/company/v1/createCompany
+POST {{apiurl}}/{{version}}/api/company/v1/create
 Content-Type: application/json
 
 {
     "userId": "8bda2548-2c1c-400c-bb9a-b76952411ed3",
-    "companyName": "Umang Shoe Stores ASDA"
+    "companyName": "Umang's Bar"
 }
 
 ###
 # @name Get Company
-GET {{apiurl}}/{{version}}/api/company/v1/getCompany?companyId=202f68a-f242-4f93-a6ea-7c9126fd67b3
+GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=d349dd11-3d2d-47b0-9c1b-960627b36b64
 
 ###
 # @name Save form response
-POST {{apiurl}}/{{version}}/api/signup/v2/response
+POST {{apiurl}}/{{version}}/api/formResponse/v1/create
 Content-Type: application/json
 
 {
@@ -107,8 +107,8 @@ Content-Type: application/json
             "rating": "4"
         }
     },
-    "formId": "OBKHX481Q6YY20WHHWWZ7",
-    "companyId": "cc25ca57-4212-4f26-a959-274704475742",
+    "formId": "YB4ZHKK8GNXEQHLYUZ20P",
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
     "queryParams": {
         "set" : "A",
         "user": "ZXCZC",
@@ -118,4 +118,4 @@ Content-Type: application/json
 
 ###
 # @name Get generated review
-GET {{apiurl}}/{{version}}/api/signup/v1/review?responseId=73ee901a-3416-4225-867c-de4ecef2ad05
+GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=87471e4a-1a8f-46fb-b65d-8d3bc1692ebd

@@ -19,6 +19,10 @@ const Form = db.define(
       type: DataTypes.STRING(64),
       field: 'company_id',
     },
+    googlePlaceId: {
+      type: DataTypes.STRING(128),
+      field: 'google_place_id',
+    },
     formName: {
       type: DataTypes.STRING(64),
       field: 'form_name',

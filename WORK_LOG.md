@@ -1,4 +1,15 @@
 ## Work log
+2023-12-02
+- Add google place id in form_draft: Done
+- Add form id in getForm response: Done
+- Respond with text only in getGeneratedReview: Done
+- Temp in gpt: 1.2: Done
+- Custom prompt in system: Done
+- Meta data in user prompt: Done
+- FormId to be 8 chars: Done
+- gpt model change: Done
+- Respond with only openapi API response as string in getReview API: Done
+
 2023-11-29
 - Form APIs created: init, update, get
 - Multiple update APIs merged into one update API

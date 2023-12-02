@@ -15,7 +15,7 @@ const updateFormSchema = joi.object({
   companyId: joi.string().trim().optional().allow('', null),
   businessMetaData: joi.object().optional().allow(null),
   formName: joi.string().trim().optional().allow('', null),
-  googlePageId: joi.string().trim().optional().allow('', null),
+  googlePlaceId: joi.string().trim().optional().allow('', null),
   aboutForm: joi.string().optional().allow('', null),
   formContent: joi.object().optional().allow(null),
   formTheme: joi.object().optional().allow(null),
@@ -84,7 +84,7 @@ async function getForm(req) {
     company.companyLogo = {};
   }
   return {
-    formId: form.Id,
+    formId: form.formId,
     formName: form.formName,
     formSettings: form.aboutForm,
     formContent: form.formContent,

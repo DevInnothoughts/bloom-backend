@@ -58,10 +58,13 @@ async function getGeneratedReview(req) {
       `Validation error: ${invalidRequest.message}`
     );
   }
-  const generatedResponse =
+  const genResp =
     await formResponseService.getGeneratedReview(validRequestData);
 
-  return generatedResponse || {};
+  if (genResp && genResp.vendorResponse && genResp.vendorResponse.length > 0) {
+    return genResp.vendorResponse[0].message.content;
+  }
+  return '';
 }
 
 module.exports = {

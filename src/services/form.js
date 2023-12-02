@@ -5,7 +5,7 @@ const { Form } = require('../models');
 const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQQRSTUVWXYZ01234567889');
 
 async function initForm(payload = {}) {
-  const formId = nanoid();
+  const formId = nanoid(8);
   const newForm = {
     formId,
   };
@@ -16,7 +16,6 @@ async function initForm(payload = {}) {
   return newForm;
 }
 
-// TODO: What about this?
 async function updateForm(payload = {}) {
   const updates = {};
   // if (payload.businessMetaData) {
@@ -25,9 +24,9 @@ async function updateForm(payload = {}) {
   if (payload.formName) {
     updates.formName = payload.formName;
   }
-  // if (payload.googlePageId) {
-  //   updates.googlePageId = payload.googlePageId;
-  // }
+  if (payload.googlePlaceId) {
+    updates.googlePlaceId = payload.googlePlaceId;
+  }
   if (payload.aboutForm) {
     updates.aboutForm = payload.aboutForm;
   }

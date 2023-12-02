@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const { FormResponse, GeneratedReview } = require('../models');
 const { applicationLogger: log } = require('../../lib/logger');
 const formService = require('./form');
+const companyService = require('./company');
 const openaiClient = require('../../integrations/openai');
 const config = require('../../lib/config');
 
@@ -36,7 +37,7 @@ function convertUserReviewToPrompt(reviewBuffer) {
   // rating: joi.string(),
   // isUserText: joi.boolean().default(false),
   const keys = Object.keys(review);
-  let prompt = '';
+  let userResponse = '';
   for (const key of keys) {
     const r = review[key];
     if (key === 'queryParams') {
@@ -48,22 +49,30 @@ function convertUserReviewToPrompt(reviewBuffer) {
       continue;
     }
     if (r.isUserText) {
-      prompt += ' Important Question: ';
+      userResponse += 'Important Question: ';
     } else {
-      prompt += ' Question: ';
+      userResponse += 'Question: ';
     }
-    prompt += r.questionTitle;
-    prompt += '\n';
-    prompt += 'Answer: ';
+    userResponse += r.questionTitle;
+    userResponse += '\n';
+    userResponse += 'Answer: ';
     if (r.rating) {
-      prompt += r.rating;
-      prompt += ' (1 being the lowest and 5 being the highest.) ';
+      userResponse += r.rating;
+      userResponse += ' (1 being the lowest and 5 being the highest.) ';
     } else {
       const answers = r.responses.join(', ');
-      prompt += answers;
+      userResponse += answers;
     }
-    prompt += '\n';
+    userResponse += '\n';
   }
+  const promptPrefix = config.openai.userPromptPrefex;
+  const prompt = `${promptPrefix}<Response>\n${userResponse}</Response>\n`;
+  return prompt;
+}
+
+function getSystemPrompt(company = {}, form = {}) {
+  let prompt = `You are a creative writer tasked with crafting unique and varied Google reviews for a business called ${company.companyName}. The company is running a survey.\n`;
+  prompt += `About the form: "${form.aboutForm}\n"`;
   return prompt;
 }
 
@@ -78,14 +87,19 @@ async function saveGeneratedReview(responseId) {
     if (!form) {
       throw new Error(`Invalid formId: ${formId}`);
     }
+    const { companyId } = form;
+    const company = await companyService.getCompany({ companyId });
+    if (!company) {
+      throw new Error(`Invalid company: ${companyId}`);
+    }
     const userPrompt = convertUserReviewToPrompt(formResponse.review);
-    const { aboutForm } = form;
+    const systemPrompt = getSystemPrompt(company, form);
     const prompts = [
       { role: 'user', content: userPrompt },
-      { role: 'system', content: aboutForm },
+      { role: 'system', content: systemPrompt },
     ];
     log.info(userPrompt);
-    log.info(aboutForm);
+    log.info(systemPrompt);
     const resp = await openaiClient.getChatCompletions(
       config.openai.defaultModel,
       prompts
