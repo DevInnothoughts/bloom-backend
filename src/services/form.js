@@ -4,11 +4,12 @@ const { Form } = require('../models');
 
 const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQQRSTUVWXYZ01234567889');
 
-async function initForm(user = {}) {
+async function initForm(user, payload) {
   const formId = nanoid(8);
   const newForm = {
     formId,
     userId: user.id,
+    companyId: payload.companyId,
   };
   await Form.create(newForm);
   return newForm;

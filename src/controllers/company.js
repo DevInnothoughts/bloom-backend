@@ -7,6 +7,7 @@ const getCompanySchema = joi.object({
 });
 
 const createOrUpdateCompanySchema = joi.object({
+  companyId: joi.string().trim().allow(null, '').optional(),
   companyName: joi.string().trim().required(),
   companyLogo: joi
     .object({
@@ -45,9 +46,17 @@ async function getCompany(req) {
   return company;
 }
 
+async function getCompanyByUserId(req) {
+  const company = await companyUserService.getCompanyFromUserID({
+    userId: req.user.id,
+  });
+  return company || {};
+}
+
 function createOrUpdateCompany(req) {
   const { value: validRequestData, error: invalidRequest } =
     createOrUpdateCompanySchema.validate({
+      companyId: req.body.companyId,
       companyName: req.body.companyName,
       companyLogo: req.body.companyLogo,
     });
@@ -63,4 +72,5 @@ function createOrUpdateCompany(req) {
 module.exports = {
   getCompany,
   createOrUpdateCompany,
+  getCompanyByUserId,
 };

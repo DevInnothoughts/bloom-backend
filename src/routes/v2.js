@@ -56,6 +56,11 @@ companyRouter.get(
   expressRoute(verifyUserToken),
   expressRoute(companyController.getCompany)
 );
+companyRouter.get(
+  '/v1/getByUserId',
+  expressRoute(verifyUserToken),
+  expressRoute(companyController.getCompanyByUserId)
+);
 companyRouter.post(
   '/v1/create',
   expressRoute(verifyUserToken),

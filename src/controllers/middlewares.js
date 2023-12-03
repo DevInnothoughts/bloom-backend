@@ -52,7 +52,7 @@ function verifyUserToken(req, res, next) {
   const token = elems[1];
   try {
     const payload = jwt.verify(token, config.userApiSecret);
-    req.user = payload || {};
+    req.user = payload.user || {};
     return next();
   } catch (err) {
     log.error(err);

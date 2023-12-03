@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const { v4: uuidv4 } = require('uuid');
 const { FormResponse, GeneratedReview } = require('../models');
 const { applicationLogger: log } = require('../../lib/logger');
@@ -40,8 +39,6 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
     raw: true,
   });
 
-  console.log('Rows in FormResponse', rows);
-
   const responses = [];
   const mapping = new Map();
 
@@ -56,7 +53,6 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
     response.createdAt = row.createdAt;
 
     const questions = Object.keys(row.review);
-    console.log('Questions: ', questions);
 
     for (const questionId of questions) {
       const question = row.review[questionId];
@@ -71,7 +67,7 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
       }
 
       const answer =
-        question.questionType === 'RATING'
+        question.questionType === 'rating'
           ? question.rating
           : question.responses;
 
@@ -95,6 +91,10 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
 
     responses.push(response);
   }
+  mapping.set('createdAt', {
+    title: 'Created At',
+    type: 'metaData',
+  });
   const formResponses = {
     responses,
     totalCount: count,

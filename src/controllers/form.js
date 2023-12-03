@@ -4,12 +4,10 @@ const { formService, companyService } = require('../services');
 
 const initFormSchema = joi.object({
   companyId: joi.string().trim().required(),
-  userId: joi.string().trim().required(),
 });
 
 const updateFormSchema = joi.object({
   formId: joi.string().trim().required(),
-  userId: joi.string().trim().required(),
   companyId: joi.string().trim().required(),
   formName: joi.string().trim().optional().allow('', null),
   googlePlaceId: joi.string().trim().optional().allow('', null),
@@ -24,7 +22,6 @@ const getFormSchema = joi.object({
 });
 
 const getFormsSchema = joi.object({
-  userId: joi.string().trim().required(),
   companyId: joi.string().trim().required(),
 });
 
@@ -32,7 +29,6 @@ async function initForm(req) {
   const { value: validRequestData, error: invalidRequest } =
     initFormSchema.validate({
       companyId: req.body.companyId,
-      userId: req.body.userId,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -97,7 +93,6 @@ async function getForm(req) {
 async function getForms(req) {
   const { value: validRequestData, error: invalidRequest } =
     getFormsSchema.validate({
-      userId: req.query.userId,
       companyId: req.query.companyId,
     });
   if (invalidRequest) {
