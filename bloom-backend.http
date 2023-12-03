@@ -128,3 +128,7 @@ Content-Type: application/json
 ###
 # @name Get generated review
 GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=73ee901a-3416-4225-867c-de4ecef2ad05
+
+###
+# @name Get All Responses
+GET {{apiurl}}/{{version}}/api/formResponse/v1/getAll?formId=U7QJMW4J&pageSize=10&pageNo=1

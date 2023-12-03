@@ -27,6 +27,12 @@ const getGeneratedReviewSchema = joi.object({
   responseId: joi.string().trim().required(),
 });
 
+const getAllFormResponsesSchema = joi.object({
+  formId: joi.string().trim().required(),
+  pageNo: joi.number(),
+  pageSize: joi.number(),
+});
+
 async function saveResponse(req) {
   const { value: validRequestData, error: invalidRequest } =
     saveResponseSchema.validate({
@@ -63,13 +69,33 @@ async function getGeneratedReview(req) {
 
   if (genResp && genResp.vendorResponse && genResp.vendorResponse.length > 0) {
     return {
-      review: genResp.vendorResponse[0].message.content
+      review: genResp.vendorResponse[0].message.content,
     };
   }
   return {};
 }
 
+async function getAllFormResponses(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    getAllFormResponsesSchema.validate({
+      formId: req.query.formId,
+      pageNo: req.query.pageNo,
+      pageSize: req.query.pageSize,
+    });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_007',
+      `Validation error: ${invalidRequest.message}`
+    );
+  }
+  const responses =
+    await formResponseService.getAllFormResponses(validRequestData);
+
+  return responses;
+}
+
 module.exports = {
   getGeneratedReview,
   saveResponse,
+  getAllFormResponses,
 };

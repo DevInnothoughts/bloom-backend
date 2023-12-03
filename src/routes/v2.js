@@ -48,6 +48,10 @@ formResponseRouter.get(
   '/v1/review',
   expressRoute(formResponseController.getGeneratedReview)
 );
+formResponseRouter.get(
+  '/v1/getAll',
+  expressRoute(formResponseController.getAllFormResponses)
+);
 r.use('/api/formResponse', formResponseRouter);
 
 module.exports = r;

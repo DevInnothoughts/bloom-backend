@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { v4: uuidv4 } = require('uuid');
 const { FormResponse, GeneratedReview } = require('../models');
 const { applicationLogger: log } = require('../../lib/logger');
@@ -6,12 +7,18 @@ const companyService = require('./company');
 const openaiClient = require('../../integrations/openai');
 const config = require('../../lib/config');
 
+function camelCaseToWords(s) {
+  const result = s.replace(/([A-Z])/g, ' $1');
+  return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
 async function saveFormResponse(payload = {}) {
   const newForm = {
     responseId: uuidv4(),
     formId: payload.formId,
     companyId: payload.companyId,
     review: JSON.stringify(payload.responses),
+    queryParams: payload.queryParams ? JSON.stringify(payload.queryParams) : {},
   };
   await FormResponse.create(newForm);
   return newForm.responseId;
@@ -22,6 +29,80 @@ function getFormResponse({ responseId }) {
     where: { responseId },
     raw: true,
   });
+}
+
+async function getAllFormResponses({ formId, pageSize, pageNo }) {
+  const { count, rows } = await FormResponse.findAndCountAll({
+    where: { formId },
+    offset: pageSize * pageNo,
+    limit: pageSize,
+    order: [['id', 'DESC']],
+    raw: true,
+  });
+
+  console.log('Rows in FormResponse', rows);
+
+  const responses = [];
+  const mapping = new Map();
+
+  for (const row of rows) {
+    const response = {};
+    let questionMap = {};
+
+    delete row.id;
+    row.review = JSON.parse(row.review.toString());
+
+    response.responseId = row.responseId;
+    response.createdAt = row.createdAt;
+
+    const questions = Object.keys(row.review);
+    console.log('Questions: ', questions);
+
+    for (const questionId of questions) {
+      const question = row.review[questionId];
+
+      questionMap = {
+        title: question.questionTitle,
+        type: question.questionType,
+      };
+
+      if (question.responses) {
+        question.responses = question.responses.join(', ');
+      }
+
+      const answer =
+        question.questionType === 'RATING'
+          ? question.rating
+          : question.responses;
+
+      response[questionId] = answer;
+
+      mapping.set(questionId, questionMap);
+    }
+
+    if (row.queryParams) {
+      row.queryParams = JSON.parse(row.queryParams.toString());
+
+      for (const param of Object.keys(row.queryParams)) {
+        response[param] = row.queryParams[param];
+
+        mapping.set(param, {
+          title: camelCaseToWords(param),
+          type: 'queryParam',
+        });
+      }
+    }
+
+    responses.push(response);
+  }
+  const formResponses = {
+    responses,
+    totalCount: count,
+    totalPages: Math.ceil(count / pageSize),
+    mapping: Object.fromEntries(mapping),
+  };
+
+  return formResponses;
 }
 
 function convertUserReviewToPrompt(reviewBuffer) {
@@ -148,4 +229,5 @@ module.exports = {
   saveFormResponse,
   saveGeneratedReview,
   getGeneratedReview,
+  getAllFormResponses,
 };
