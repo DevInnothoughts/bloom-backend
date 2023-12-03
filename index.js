@@ -15,7 +15,7 @@ async function main() {
 
 main()
   .then(() => {
-    logger.info(config);
+    // logger.info(config);
     logger.info('Application online');
   })
   .catch((err) => {
