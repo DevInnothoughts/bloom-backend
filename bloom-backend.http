@@ -1,0 +1,157 @@
+# rta-svc
+
+@apiurl = http://localhost:8090
+# @apiurl = https://rta-svc.beta.zerodhafundhouse.com
+# @apiurl = https://rta-svc.prod.zerodhafundhouse.com
+@version = v2
+@webServerToken = Bearer XXXX.YYYY.ZZZZ
+@userToken = Bearer XXXX.YYYY.ZZZZ
+
+###
+# @name Health check
+GET {{apiurl}}/health
+
+###
+# @name Get onboarding
+GET {{apiurl}}/{{version}}/api/user/v1/get?emailId=umang5@gmail.com
+Authorization: {{webServerToken}}
+
+###
+# @name Post onboarding
+POST {{apiurl}}/{{version}}/api/user/v1/create
+Content-Type: application/json
+Authorization: {{webServerToken}}
+
+{
+    "emailId": "umang5@gmail.com",
+    "name": "Umang Tiwary",
+    "avatarUrl": "www.google.com"
+}
+
+###
+# @name Create Company
+POST {{apiurl}}/{{version}}/api/company/v1/create
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+    "companyName": "Umang's Bar"
+}
+
+###
+# @name Get Company
+GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=ee4dcaa8-8941-4ebb-8fd9-80c7c627b591
+Authorization: {{userToken}}
+
+###
+# @name Init form
+POST {{apiurl}}/{{version}}/api/form/v1/init
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
+    "userId": "198fd645-6fc6-449e-aa16-8f715d29e42b"
+}
+
+###
+# @name Update form
+POST {{apiurl}}/{{version}}/api/form/v1/update
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+    "formId": "RRU8VMW0",
+    "formName": "F&B feedback form",
+    "googlePlaceId": "GPID-1",
+    "aboutForm": "This is feedback form our small restaurant in Indiranagar, Bangalore",
+    "formContent": { "a": "b" },
+    "formTheme": { "colorCode": "#ffff" }
+}
+
+###
+# @name Get form
+GET {{apiurl}}/{{version}}/api/form/v1/get?formId=RRU8VMW0
+
+###
+# @name Get forms
+GET {{apiurl}}/{{version}}/api/form/v1/getAll?userId=198fd645-6fc6-449e-aa16-8f715d29e42b&companyId=773dc534-b2cd-4c2b-b645-fb961e490e5f
+
+###
+# @name Create Lead
+POST {{apiurl}}/{{version}}/api/lead/v1/create
+Content-Type: application/json
+
+{
+    "mobileNumber": "9089898897"
+}
+
+###
+# @name Update Lead
+POST {{apiurl}}/{{version}}/api/lead/v1/update
+Content-Type: application/json
+
+{
+    "mobileNumber": "9089898897",
+    "businessName": "Umang Shoe Store",
+    "businessPlaceId": "hjashdajdh144787187XD",
+    "businessAddress": "Old Airport Road, Bengaluru",
+    "userName": "Umang Tiwary",
+    "emailId": "umang@gmail.com"
+}
+
+###
+<<<<<<< HEAD
+=======
+# @name Create Company
+POST {{apiurl}}/{{version}}/api/company/v1/create
+Content-Type: application/json
+
+{
+    "userId": "8bda2548-2c1c-400c-bb9a-b76952411ed3",
+    "companyName": "Umang's Bar"
+}
+
+###
+# @name Get Company
+GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=d349dd11-3d2d-47b0-9c1b-960627b36b64
+
+###
+# @name Get Company By User Id
+GET {{apiurl}}/{{version}}/api/company/v1/getByUserId?userId=198fd645-6fc6-449e-aa16-8f715d29e42b
+
+###
+>>>>>>> a6d1735e43a2c76dd8cc801155439b0680f153b5
+# @name Save form response
+POST {{apiurl}}/{{version}}/api/formResponse/v1/create
+Content-Type: application/json
+
+{
+    "responses": {
+        "1": {
+            "isUserText": true,
+            "questionTitle": "How did you like the service?",
+            "responses": ["Food is amazing", "DJ was top-notch"]
+        },
+        "2": {
+            "isUserText": false,
+            "questionTitle": "How much rating would you like to give?",
+            "rating": "4"
+        }
+    },
+    "formId": "YB4ZHKK8GNXEQHLYUZ20P",
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
+    "queryParams": {
+        "set" : "A",
+        "user": "ZXCZC",
+        "XVC" : "91959595"
+    }
+}
+
+###
+# @name Get generated review
+GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=73ee901a-3416-4225-867c-de4ecef2ad05
+
+###
+# @name Get All Responses
+GET {{apiurl}}/{{version}}/api/formResponse/v1/getAll?formId=U7QJMW4J&pageSize=10&pageNo=1
