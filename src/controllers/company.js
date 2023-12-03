@@ -1,6 +1,6 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { companyService } = require('../services');
+const { companyService, companyUserService } = require('../services');
 
 const getCompanySchema = joi.object({
   companyId: joi.string().trim().required(),
@@ -60,7 +60,7 @@ async function getCompanyByUserId(req) {
       invalidRequest.message
     );
   }
-  const company = await companyService.getCompanyFromUserID({
+  const company = await companyUserService.getCompanyFromUserID({
     userId: validRequestData.userId,
   });
   return company || {};

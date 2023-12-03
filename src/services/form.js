@@ -8,24 +8,23 @@ async function initForm(payload = {}) {
   const formId = nanoid(8);
   const newForm = {
     formId,
+    companyId: payload.companyId,
+    userId: payload.userId,
   };
-  if (payload.companyId) {
-    newForm.companyId = payload.companyId;
-  }
   await Form.create(newForm);
   return newForm;
 }
 
 async function updateForm(payload = {}) {
   const updates = {};
-  // if (payload.businessMetaData) {
-  //   updates.businessMetaData = JSON.stringify(payload.businessMetaData);
-  // }
   if (payload.formName) {
     updates.formName = payload.formName;
   }
   if (payload.googlePlaceId) {
     updates.googlePlaceId = payload.googlePlaceId;
+  }
+  if (payload.googleBusinessName) {
+    updates.googleBusinessName = payload.googleBusinessName;
   }
   if (payload.aboutForm) {
     updates.aboutForm = payload.aboutForm;
@@ -35,9 +34,6 @@ async function updateForm(payload = {}) {
   }
   if (payload.formTheme) {
     updates.formTheme = JSON.stringify(payload.formTheme);
-  }
-  if (payload.companyId) {
-    updates.companyId = payload.companyId;
   }
   if (Object.keys(updates).length > 0) {
     await Form.update(updates, {
@@ -54,6 +50,9 @@ async function getForm({ formId }) {
   if (!form) {
     return form;
   }
+
+  delete form.id;
+
   if (form.formContent) {
     form.formContent = JSON.parse(form.formContent.toString());
   }
@@ -63,8 +62,25 @@ async function getForm({ formId }) {
   return form;
 }
 
+async function getForms({ userId, companyId }) {
+  const forms = await Form.findAll({
+    where: { userId, companyId },
+    raw: true,
+  });
+  for (const form of forms) {
+    if (form.formContent) {
+      form.formContent = JSON.parse(form.formContent.toString());
+    }
+    if (form.formTheme) {
+      form.formTheme = JSON.parse(form.formTheme.toString());
+    }
+  }
+  return forms;
+}
+
 module.exports = {
   initForm,
   updateForm,
   getForm,
+  getForms,
 };

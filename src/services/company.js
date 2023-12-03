@@ -6,6 +6,11 @@ async function getCompany({ companyId }) {
     where: { companyId },
     raw: true,
   });
+
+  if (company) {
+    delete company.id;
+  }
+
   return company;
 }
 

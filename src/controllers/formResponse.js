@@ -8,12 +8,12 @@ const saveResponseSchema = joi.object({
     .pattern(
       joi.string(),
       joi.object({
-        questionId: joi.string().trim(),
+        questionId: joi.number(),
         questionTitle: joi.string().trim(),
         questionSubtitle: joi.string().trim(),
         questionType: joi.string().trim(),
         responses: joi.array().items(joi.string()),
-        rating: joi.string(),
+        rating: joi.number(),
         isUserText: joi.boolean().default(false),
       })
     )
@@ -62,9 +62,11 @@ async function getGeneratedReview(req) {
     await formResponseService.getGeneratedReview(validRequestData);
 
   if (genResp && genResp.vendorResponse && genResp.vendorResponse.length > 0) {
-    return genResp.vendorResponse[0].message.content;
+    return {
+      review: genResp.vendorResponse[0].message.content
+    };
   }
-  return '';
+  return {};
 }
 
 module.exports = {

@@ -30,7 +30,8 @@ POST {{apiurl}}/{{version}}/api/form/v1/init
 Content-Type: application/json
 
 {
-    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64"
+    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
+    "userId": "198fd645-6fc6-449e-aa16-8f715d29e42b"
 }
 
 ###
@@ -50,7 +51,11 @@ Content-Type: application/json
 
 ###
 # @name Get form
-GET {{apiurl}}/{{version}}/api/form/v1/get?formId=OBKHX481Q6YY20WHHWWZ7
+GET {{apiurl}}/{{version}}/api/form/v1/get?formId=U7QJMW4J
+
+###
+# @name Get forms
+GET {{apiurl}}/{{version}}/api/form/v1/getAll?userId=198fd645-6fc6-449e-aa16-8f715d29e42b&companyId=773dc534-b2cd-4c2b-b645-fb961e490e5f
 
 ###
 # @name Create Lead
@@ -90,6 +95,10 @@ Content-Type: application/json
 GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=d349dd11-3d2d-47b0-9c1b-960627b36b64
 
 ###
+# @name Get Company By User Id
+GET {{apiurl}}/{{version}}/api/company/v1/getByUserId?userId=198fd645-6fc6-449e-aa16-8f715d29e42b
+
+###
 # @name Save form response
 POST {{apiurl}}/{{version}}/api/formResponse/v1/create
 Content-Type: application/json
@@ -118,4 +127,4 @@ Content-Type: application/json
 
 ###
 # @name Get generated review
-GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=87471e4a-1a8f-46fb-b65d-8d3bc1692ebd
+GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=73ee901a-3416-4225-867c-de4ecef2ad05

@@ -7,15 +7,17 @@ const {
 } = require('../services');
 
 const initFormSchema = joi.object({
-  companyId: joi.string().trim().optional().allow('', null),
+  companyId: joi.string().trim().required(),
+  userId: joi.string().trim().required(),
 });
 
 const updateFormSchema = joi.object({
   formId: joi.string().trim().required(),
-  companyId: joi.string().trim().optional().allow('', null),
-  businessMetaData: joi.object().optional().allow(null),
+  userId: joi.string().trim().required(),
+  companyId: joi.string().trim().required(),
   formName: joi.string().trim().optional().allow('', null),
   googlePlaceId: joi.string().trim().optional().allow('', null),
+  googleBusinessName: joi.string().trim().optional().allow('', null),
   aboutForm: joi.string().optional().allow('', null),
   formContent: joi.object().optional().allow(null),
   formTheme: joi.object().optional().allow(null),
@@ -23,6 +25,11 @@ const updateFormSchema = joi.object({
 
 const getFormSchema = joi.object({
   formId: joi.string().trim().required(),
+});
+
+const getFormsSchema = joi.object({
+  userId: joi.string().trim().required(),
+  companyId: joi.string().trim().required(),
 });
 
 const migrateSchema = joi.object({
@@ -34,6 +41,7 @@ async function initForm(req) {
   const { value: validRequestData, error: invalidRequest } =
     initFormSchema.validate({
       companyId: req.body.companyId,
+      userId: req.body.userId,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -84,11 +92,7 @@ async function getForm(req) {
     company.companyLogo = {};
   }
   return {
-    formId: form.formId,
-    formName: form.formName,
-    formSettings: form.aboutForm,
-    formContent: form.formContent,
-    formTheme: form.formTheme,
+    ...form,
     companyDetails: {
       companyName: company.companyName,
       logoScalingFactor: company.companyLogo.logoScalingFactor,
@@ -97,6 +101,21 @@ async function getForm(req) {
       imageWidth: company.companyLogo.imageWidth,
     },
   };
+}
+
+async function getForms(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    getFormsSchema.validate({
+      userId: req.query.userId,
+      companyId: req.query.companyId,
+    });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_0005',
+      invalidRequest.message
+    );
+  }
+  return formService.getForms(validRequestData);
 }
 
 async function migrateResponse(req) {
@@ -118,5 +137,6 @@ module.exports = {
   initForm,
   updateForm,
   getForm,
+  getForms,
   migrateResponse,
 };

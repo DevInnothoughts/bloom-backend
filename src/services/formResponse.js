@@ -72,7 +72,7 @@ function convertUserReviewToPrompt(reviewBuffer) {
 
 function getSystemPrompt(company = {}, form = {}) {
   let prompt = `You are a creative writer tasked with crafting unique and varied Google reviews for a business called ${company.companyName}. The company is running a survey.\n`;
-  prompt += `About the form: "${form.aboutForm}\n"`;
+  prompt += `About the survey: "${form.aboutForm}\n"`;
   return prompt;
 }
 
