@@ -71,15 +71,11 @@ Authorization: {{userToken}}
 
 ###
 # @name Get form
-<<<<<<< HEAD
 GET {{apiurl}}/{{version}}/api/form/v1/get?formId=RRU8VMW0
-=======
-GET {{apiurl}}/{{version}}/api/form/v1/get?formId=U7QJMW4J
 
 ###
 # @name Get forms
 GET {{apiurl}}/{{version}}/api/form/v1/getAll?userId=198fd645-6fc6-449e-aa16-8f715d29e42b&companyId=773dc534-b2cd-4c2b-b645-fb961e490e5f
->>>>>>> a6d1735e43a2c76dd8cc801155439b0680f153b5
 
 ###
 # @name Create Lead
