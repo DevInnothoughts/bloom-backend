@@ -38,7 +38,11 @@ formRouter.post(
   expressRoute(formController.updateForm)
 );
 formRouter.get('/v1/get', expressRoute(formController.getForm));
-// formRouter.get('/v1/migrate', expressRoute(formController.migrateResponse));
+formRouter.get(
+  '/v1/getAll',
+  expressRoute(verifyUserToken),
+  expressRoute(formController.getForms)
+);
 r.use('/api/form', formRouter);
 
 const leadRouter = express.Router();
@@ -67,6 +71,10 @@ formResponseRouter.post(
 formResponseRouter.get(
   '/v1/review',
   expressRoute(formResponseController.getGeneratedReview)
+);
+formResponseRouter.get(
+  '/v1/getAll',
+  expressRoute(formResponseController.getAllFormResponses)
 );
 r.use('/api/formResponse', formResponseRouter);
 

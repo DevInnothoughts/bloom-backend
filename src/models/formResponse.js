@@ -24,6 +24,11 @@ const FormResponse = db.define(
     },
     review: {
       type: DataTypes.BLOB,
+      allowNull: false,
+    },
+    queryParams: {
+      type: DataTypes.BLOB,
+      field: 'query_params',
     },
     createdAt: {
       type: DataTypes.DATE,

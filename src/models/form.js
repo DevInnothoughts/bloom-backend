@@ -10,6 +10,11 @@ const Form = db.define(
       primaryKey: true,
       allowNull: false,
     },
+    userId: {
+      type: DataTypes.STRING(64),
+      field: 'user_id',
+      allowNull: false,
+    },
     formId: {
       type: DataTypes.STRING(64),
       field: 'form_id',
@@ -22,10 +27,15 @@ const Form = db.define(
     companyId: {
       type: DataTypes.STRING(64),
       field: 'company_id',
+      allowNull: false,
     },
     googlePlaceId: {
       type: DataTypes.STRING(128),
       field: 'google_place_id',
+    },
+    googleBusinessName: {
+      type: DataTypes.STRING(256),
+      field: 'google_business_name',
     },
     formName: {
       type: DataTypes.STRING(64),

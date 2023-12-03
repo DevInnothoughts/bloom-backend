@@ -8,12 +8,12 @@ const saveResponseSchema = joi.object({
     .pattern(
       joi.string(),
       joi.object({
-        questionId: joi.string().trim(),
+        questionId: joi.number(),
         questionTitle: joi.string().trim(),
         questionSubtitle: joi.string().trim(),
         questionType: joi.string().trim(),
         responses: joi.array().items(joi.string()),
-        rating: joi.string(),
+        rating: joi.number(),
         isUserText: joi.boolean().default(false),
       })
     )
@@ -25,6 +25,12 @@ const saveResponseSchema = joi.object({
 
 const getGeneratedReviewSchema = joi.object({
   responseId: joi.string().trim().required(),
+});
+
+const getAllFormResponsesSchema = joi.object({
+  formId: joi.string().trim().required(),
+  pageNo: joi.number(),
+  pageSize: joi.number(),
 });
 
 async function saveResponse(req) {
@@ -62,12 +68,34 @@ async function getGeneratedReview(req) {
     await formResponseService.getGeneratedReview(validRequestData);
 
   if (genResp && genResp.vendorResponse && genResp.vendorResponse.length > 0) {
-    return genResp.vendorResponse[0].message.content;
+    return {
+      review: genResp.vendorResponse[0].message.content,
+    };
   }
-  return '';
+  return {};
+}
+
+async function getAllFormResponses(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    getAllFormResponsesSchema.validate({
+      formId: req.query.formId,
+      pageNo: req.query.pageNo,
+      pageSize: req.query.pageSize,
+    });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_007',
+      `Validation error: ${invalidRequest.message}`
+    );
+  }
+  const responses =
+    await formResponseService.getAllFormResponses(validRequestData);
+
+  return responses;
 }
 
 module.exports = {
   getGeneratedReview,
   saveResponse,
+  getAllFormResponses,
 };

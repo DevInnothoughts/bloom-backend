@@ -1,21 +1,19 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const {
-  formService,
-  companyService,
-  formResponseService,
-} = require('../services');
+const { formService, companyService } = require('../services');
 
 const initFormSchema = joi.object({
-  companyId: joi.string().trim().optional().allow('', null),
+  companyId: joi.string().trim().required(),
+  userId: joi.string().trim().required(),
 });
 
 const updateFormSchema = joi.object({
   formId: joi.string().trim().required(),
-  companyId: joi.string().trim().optional().allow('', null),
-  businessMetaData: joi.object().optional().allow(null),
+  userId: joi.string().trim().required(),
+  companyId: joi.string().trim().required(),
   formName: joi.string().trim().optional().allow('', null),
   googlePlaceId: joi.string().trim().optional().allow('', null),
+  googleBusinessName: joi.string().trim().optional().allow('', null),
   aboutForm: joi.string().optional().allow('', null),
   formContent: joi.object().optional().allow(null),
   formTheme: joi.object().optional().allow(null),
@@ -25,15 +23,16 @@ const getFormSchema = joi.object({
   formId: joi.string().trim().required(),
 });
 
-const migrateSchema = joi.object({
-  formId: joi.string().trim().required(),
-  businessId: joi.string().trim().optional().allow('', null),
+const getFormsSchema = joi.object({
+  userId: joi.string().trim().required(),
+  companyId: joi.string().trim().required(),
 });
 
 async function initForm(req) {
   const { value: validRequestData, error: invalidRequest } =
     initFormSchema.validate({
       companyId: req.body.companyId,
+      userId: req.body.userId,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -84,11 +83,7 @@ async function getForm(req) {
     company.companyLogo = {};
   }
   return {
-    formId: form.formId,
-    formName: form.formName,
-    formSettings: form.aboutForm,
-    formContent: form.formContent,
-    formTheme: form.formTheme,
+    ...form,
     companyDetails: {
       companyName: company.companyName,
       logoScalingFactor: company.companyLogo.logoScalingFactor,
@@ -99,11 +94,11 @@ async function getForm(req) {
   };
 }
 
-async function migrateResponse(req) {
+async function getForms(req) {
   const { value: validRequestData, error: invalidRequest } =
-    migrateSchema.validate({
-      formId: req.body.formId,
-      businessId: req.body.businessId,
+    getFormsSchema.validate({
+      userId: req.query.userId,
+      companyId: req.query.companyId,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -111,12 +106,12 @@ async function migrateResponse(req) {
       invalidRequest.message
     );
   }
-  await formResponseService.migrate(validRequestData);
+  return formService.getForms(req.user, validRequestData);
 }
 
 module.exports = {
   initForm,
   updateForm,
   getForm,
-  migrateResponse,
+  getForms,
 };
