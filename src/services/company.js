@@ -9,10 +9,7 @@ async function getCompany({ companyId }) {
   return company;
 }
 
-async function createCompany(payload) {
-  // eslint-disable-next-line no-console
-  console.log(payload);
-
+async function createCompany(user, payload) {
   const newCompany = {
     companyId: uuidv4(),
     companyName: payload.companyName,
@@ -24,7 +21,7 @@ async function createCompany(payload) {
 
   const newCompanyUser = {
     companyId: newCompany.companyId,
-    userId: payload.userId, // Ideally this should come from JWT
+    userId: user.id,
     isAdmin: true,
     status: 'APPROVED',
   };

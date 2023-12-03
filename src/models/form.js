@@ -15,6 +15,10 @@ const Form = db.define(
       field: 'form_id',
       unique: true,
     },
+    userId: {
+      type: DataTypes.STRING(64),
+      field: 'user_id',
+    },
     companyId: {
       type: DataTypes.STRING(64),
       field: 'company_id',

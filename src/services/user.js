@@ -11,6 +11,7 @@ async function getUser({ emailId }) {
   let company = {};
 
   if (user) {
+    delete user.id;
     company = await companyUserService.getCompanyFromUserID({
       userId: user.userId,
     });

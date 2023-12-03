@@ -6,19 +6,39 @@ const {
   companyController,
   formResponseController,
 } = require('../controllers');
+const {
+  verifyUserToken,
+  verifyWebServerToken,
+} = require('../controllers/middlewares');
 const { expressRoute } = require('../../lib/utils');
 
 const userRouter = express.Router();
-userRouter.get('/v1/get', expressRoute(userController.getUser));
-userRouter.post('/v1/create', expressRoute(userController.createOrUpdateUser));
+userRouter.get(
+  '/v1/get',
+  expressRoute(verifyWebServerToken),
+  expressRoute(userController.getUser)
+);
+userRouter.post(
+  '/v1/create',
+  expressRoute(verifyWebServerToken),
+  expressRoute(userController.createOrUpdateUser)
+);
 const r = express.Router();
 r.use('/api/user', userRouter);
 
 const formRouter = express.Router();
-formRouter.post('/v1/init', expressRoute(formController.initForm));
-formRouter.post('/v1/update', expressRoute(formController.updateForm));
+formRouter.post(
+  '/v1/init',
+  expressRoute(verifyUserToken),
+  expressRoute(formController.initForm)
+);
+formRouter.post(
+  '/v1/update',
+  expressRoute(verifyUserToken),
+  expressRoute(formController.updateForm)
+);
 formRouter.get('/v1/get', expressRoute(formController.getForm));
-formRouter.get('/v1/migrate', expressRoute(formController.migrateResponse));
+// formRouter.get('/v1/migrate', expressRoute(formController.migrateResponse));
 r.use('/api/form', formRouter);
 
 const leadRouter = express.Router();
@@ -27,13 +47,14 @@ leadRouter.post('/v1/update', expressRoute(leadController.updateLead));
 r.use('/api/lead', leadRouter);
 
 const companyRouter = express.Router();
-companyRouter.get('/v1/get', expressRoute(companyController.getCompany));
 companyRouter.get(
-  '/v1/getByUserId',
-  expressRoute(companyController.getCompanyByUserId)
+  '/v1/get',
+  expressRoute(verifyUserToken),
+  expressRoute(companyController.getCompany)
 );
 companyRouter.post(
   '/v1/create',
+  expressRoute(verifyUserToken),
   expressRoute(companyController.createOrUpdateCompany)
 );
 r.use('/api/company', companyRouter);

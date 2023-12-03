@@ -12,22 +12,39 @@ async function getCompanyFromUserID({ userId }) {
       raw: true,
     });
 
-    if (company && company.companyLogo) {
-      company.companyLogo = JSON.parse(company.companyLogo.toString());
+    if (company) {
+      delete company.id;
+      if (company.companyLogo) {
+        company.companyLogo = JSON.parse(company.companyLogo.toString());
+      }
     }
 
     return company;
   }
 }
 
-// async function getUserFromCompanyID({ companyId }) {
-//   const companyUser = await CompanyUser.findOne({
-//     where: { companyId },
-//   });
+async function getCompany({ userId, companyId }) {
+  const companyUser = await CompanyUser.findOne({
+    where: { userId, companyId },
+    raw: true,
+  });
 
-//   return companyUser;
-// }
+  if (companyUser) {
+    const company = await Company.findOne({
+      where: { companyId: companyUser.companyId },
+      raw: true,
+    });
+    if (company) {
+      delete company.id;
+      if (company.companyLogo) {
+        company.companyLogo = JSON.parse(company.companyLogo.toString());
+      }
+    }
+    return company;
+  }
+}
 
 module.exports = {
   getCompanyFromUserID,
+  getCompany,
 };

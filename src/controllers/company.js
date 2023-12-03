@@ -1,17 +1,12 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { companyService } = require('../services');
+const { companyService, companyUserService } = require('../services');
 
 const getCompanySchema = joi.object({
   companyId: joi.string().trim().required(),
 });
 
-const getCompanyByUserIdSchema = joi.object({
-  userId: joi.string().trim().required(),
-});
-
 const createOrUpdateCompanySchema = joi.object({
-  userId: joi.string().trim().required(),
   companyName: joi.string().trim().required(),
   companyLogo: joi
     .object({
@@ -36,7 +31,8 @@ async function getCompany(req) {
       invalidRequest.message
     );
   }
-  const company = await companyService.getCompany({
+  const company = await companyUserService.getCompany({
+    userId: req.user.id,
     companyId: validRequestData.companyId,
   });
 
@@ -49,27 +45,9 @@ async function getCompany(req) {
   return company;
 }
 
-async function getCompanyByUserId(req) {
-  const { value: validRequestData, error: invalidRequest } =
-    getCompanyByUserIdSchema.validate({
-      userId: req.query.userId,
-    });
-  if (invalidRequest) {
-    throw new generalExceptions.ValidationError(
-      'BLAPI_0012',
-      invalidRequest.message
-    );
-  }
-  const company = await companyService.getCompanyFromUserID({
-    userId: validRequestData.userId,
-  });
-  return company || {};
-}
-
-async function createOrUpdateCompany(req) {
+function createOrUpdateCompany(req) {
   const { value: validRequestData, error: invalidRequest } =
     createOrUpdateCompanySchema.validate({
-      userId: req.body.userId,
       companyName: req.body.companyName,
       companyLogo: req.body.companyLogo,
     });
@@ -79,23 +57,10 @@ async function createOrUpdateCompany(req) {
       invalidRequest.message
     );
   }
-
-  const company = await companyService.createCompany(validRequestData);
-  return company;
-  // const company = await companyService.getCompany({
-  //   companyId: validRequestData.companyId,
-  // });
-
-  // if (!company) {
-  //   await companyService.createCompany(validRequestData);
-  // }
-  // if (validRequestData.companyName !== '' || !validRequestData.companyLogo) {
-  //   await companyService.updateCompany(company, validRequestData);
-  // }
+  return companyService.createCompany(req.user, validRequestData);
 }
 
 module.exports = {
   getCompany,
-  getCompanyByUserId,
   createOrUpdateCompany,
 };

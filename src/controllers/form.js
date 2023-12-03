@@ -41,7 +41,7 @@ async function initForm(req) {
       invalidRequest.message
     );
   }
-  const newForm = await formService.initForm(validRequestData);
+  const newForm = await formService.initForm(req.user, validRequestData);
   return newForm.formId;
 }
 
@@ -54,7 +54,7 @@ async function updateForm(req) {
       invalidRequest.message
     );
   }
-  await formService.updateForm(validRequestData);
+  await formService.updateForm(req.user, validRequestData);
 }
 
 async function getForm(req) {

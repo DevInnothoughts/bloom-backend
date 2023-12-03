@@ -4,6 +4,8 @@
 # @apiurl = https://rta-svc.beta.zerodhafundhouse.com
 # @apiurl = https://rta-svc.prod.zerodhafundhouse.com
 @version = v2
+@webServerToken = Bearer XXXX.YYYY.ZZZZ
+@userToken = Bearer XXXX.YYYY.ZZZZ
 
 ###
 # @name Health check
@@ -12,11 +14,13 @@ GET {{apiurl}}/health
 ###
 # @name Get onboarding
 GET {{apiurl}}/{{version}}/api/user/v1/get?emailId=umang5@gmail.com
+Authorization: {{webServerToken}}
 
 ###
 # @name Post onboarding
 POST {{apiurl}}/{{version}}/api/user/v1/create
 Content-Type: application/json
+Authorization: {{webServerToken}}
 
 {
     "emailId": "umang5@gmail.com",
@@ -25,9 +29,25 @@ Content-Type: application/json
 }
 
 ###
+# @name Create Company
+POST {{apiurl}}/{{version}}/api/company/v1/create
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+    "companyName": "Umang's Bar"
+}
+
+###
+# @name Get Company
+GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=ee4dcaa8-8941-4ebb-8fd9-80c7c627b591
+Authorization: {{userToken}}
+
+###
 # @name Init form
 POST {{apiurl}}/{{version}}/api/form/v1/init
 Content-Type: application/json
+Authorization: {{userToken}}
 
 {
     "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64"
@@ -37,10 +57,10 @@ Content-Type: application/json
 # @name Update form
 POST {{apiurl}}/{{version}}/api/form/v1/update
 Content-Type: application/json
+Authorization: {{userToken}}
 
 {
-    "formId": "YB4ZHKK8GNXEQHLYUZ20P",
-    "companyId": "d349dd11-3d2d-47b0-9c1b-960627b36b64",
+    "formId": "RRU8VMW0",
     "formName": "F&B feedback form",
     "googlePlaceId": "GPID-1",
     "aboutForm": "This is feedback form our small restaurant in Indiranagar, Bangalore",
@@ -50,7 +70,7 @@ Content-Type: application/json
 
 ###
 # @name Get form
-GET {{apiurl}}/{{version}}/api/form/v1/get?formId=OBKHX481Q6YY20WHHWWZ7
+GET {{apiurl}}/{{version}}/api/form/v1/get?formId=RRU8VMW0
 
 ###
 # @name Create Lead
@@ -74,20 +94,6 @@ Content-Type: application/json
     "userName": "Umang Tiwary",
     "emailId": "umang@gmail.com"
 }
-
-###
-# @name Create Company
-POST {{apiurl}}/{{version}}/api/company/v1/create
-Content-Type: application/json
-
-{
-    "userId": "8bda2548-2c1c-400c-bb9a-b76952411ed3",
-    "companyName": "Umang's Bar"
-}
-
-###
-# @name Get Company
-GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=d349dd11-3d2d-47b0-9c1b-960627b36b64
 
 ###
 # @name Save form response

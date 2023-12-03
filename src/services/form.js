@@ -4,10 +4,11 @@ const { Form } = require('../models');
 
 const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQQRSTUVWXYZ01234567889');
 
-async function initForm(payload = {}) {
+async function initForm(user = {}, payload = {}) {
   const formId = nanoid(8);
   const newForm = {
     formId,
+    userId: user.id,
   };
   if (payload.companyId) {
     newForm.companyId = payload.companyId;
@@ -16,7 +17,7 @@ async function initForm(payload = {}) {
   return newForm;
 }
 
-async function updateForm(payload = {}) {
+async function updateForm(user = {}, payload = {}) {
   const updates = {};
   // if (payload.businessMetaData) {
   //   updates.businessMetaData = JSON.stringify(payload.businessMetaData);
@@ -41,7 +42,7 @@ async function updateForm(payload = {}) {
   }
   if (Object.keys(updates).length > 0) {
     await Form.update(updates, {
-      where: { formId: payload.formId },
+      where: { formId: payload.formId, userId: user.id },
     });
   }
 }
