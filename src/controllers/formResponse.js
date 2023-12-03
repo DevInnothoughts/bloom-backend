@@ -1,6 +1,6 @@
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
-const { formResponseService } = require('../services');
+const { formResponseService, formService } = require('../services');
 
 const saveResponseSchema = joi.object({
   responses: joi
@@ -86,6 +86,20 @@ async function getAllFormResponses(req) {
     throw new generalExceptions.ValidationError(
       'BLAPI_007',
       `Validation error: ${invalidRequest.message}`
+    );
+  }
+  const form = await formService.getForm({ formId: validRequestData.formId });
+  if (!form) {
+    return {
+      responses: [],
+      totalCount: 0,
+      totalPages: 0,
+      mapping: {},
+    };
+  }
+  if (form.userId !== req.user.id) {
+    return generalExceptions.PermissionDenied(
+      'Form not avaiable for logged in user'
     );
   }
   const responses =

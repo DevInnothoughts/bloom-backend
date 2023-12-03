@@ -74,6 +74,7 @@ formResponseRouter.get(
 );
 formResponseRouter.get(
   '/v1/getAll',
+  expressRoute(verifyUserToken),
   expressRoute(formResponseController.getAllFormResponses)
 );
 r.use('/api/formResponse', formResponseRouter);
