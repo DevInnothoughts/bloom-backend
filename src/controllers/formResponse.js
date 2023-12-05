@@ -13,7 +13,10 @@ const saveResponseSchema = joi.object({
           questionTitle: joi.string().trim(),
           questionSubtitle: joi.string().trim(),
           questionType: joi.string().trim(),
-          responses: joi.array().items(joi.string()),
+          responses: joi
+            .array()
+            .items(joi.string().allow(null, ''))
+            .allow(null),
           rating: joi.number(),
           isUserText: joi.boolean().default(false),
         })
