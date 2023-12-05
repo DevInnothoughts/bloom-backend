@@ -121,6 +121,10 @@ function convertUserReviewToPrompt(reviewBuffer) {
   let userResponse = '';
   for (const key of keys) {
     const r = review[key];
+    if (!r) {
+      /* eslint-disable no-continue */
+      continue;
+    }
     if (key === 'queryParams') {
       /* eslint-disable no-continue */
       continue;
