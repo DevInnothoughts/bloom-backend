@@ -1,0 +1,46 @@
+{
+  "name": "bloom-backend",
+  "version": "1.0.0",
+  "description": "API for bloom",
+  "main": "index.js",
+  "scripts": {
+    "test": "export TZ=utc && npm run lint && npm run format:check",
+    "start": "node index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"./**/*.{js,json}\"",
+    "format:check": "prettier --check \"./**/*.{js,json}\"",
+    "codefix": "npm run lint:fix && npm run format",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agrawalravi95/bloom-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agrawalravi95/bloom-backend/issues"
+  },
+  "homepage": "https://github.com/agrawalravi95/bloom-backend#readme",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "joi": "^17.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.6.5",
+    "nanoid": "^3.3.7",
+    "pino": "^8.16.2",
+    "sequelize": "^6.35.1",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^8.0.3",
+    "prettier": "^3.1.0"
+  }
+}
