@@ -1,6 +1,7 @@
 const { customAlphabet } = require('nanoid');
 
 const { Form } = require('../models');
+const formResponseService = require('./formResponse');
 
 const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQQRSTUVWXYZ01234567889');
 
@@ -70,6 +71,10 @@ async function getForms(user, { companyId }) {
   for (const form of forms) {
     if (form.formContent) {
       form.formContent = JSON.parse(form.formContent.toString());
+      // eslint-disable-next-line no-await-in-loop
+      form.responseCount = await formResponseService.getFormResponseCount({
+        formId: form.formId,
+      });
     }
     if (form.formTheme) {
       form.formTheme = JSON.parse(form.formTheme.toString());

@@ -30,6 +30,12 @@ function getFormResponse({ responseId }) {
   });
 }
 
+function getFormResponseCount({ formId }) {
+  return FormResponse.count({
+    where: { formId },
+  });
+}
+
 async function getAllFormResponses({ formId, pageSize, pageNo }) {
   const { count, rows } = await FormResponse.findAndCountAll({
     where: { formId },
@@ -56,6 +62,9 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
 
     for (const questionId of questions) {
       const question = row.review[questionId];
+
+      // eslint-disable-next-line no-continue
+      if (!question) continue;
 
       questionMap = {
         title: question.questionTitle,
@@ -234,4 +243,5 @@ module.exports = {
   saveGeneratedReview,
   getGeneratedReview,
   getAllFormResponses,
+  getFormResponseCount,
 };
