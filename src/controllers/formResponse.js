@@ -7,18 +7,20 @@ const saveResponseSchema = joi.object({
     .object()
     .pattern(
       joi.string(),
-      joi.object({
-        questionId: joi.number(),
-        questionTitle: joi.string().trim(),
-        questionSubtitle: joi.string().trim(),
-        questionType: joi.string().trim(),
-        responses: joi.array().items(joi.string()),
-        rating: joi.number(),
-        isUserText: joi.boolean().default(false),
-      })
+      joi
+        .object({
+          questionId: joi.number(),
+          questionTitle: joi.string().trim(),
+          questionSubtitle: joi.string().trim(),
+          questionType: joi.string().trim(),
+          responses: joi.array().items(joi.string()),
+          rating: joi.number(),
+          isUserText: joi.boolean().default(false),
+        })
+        .optional()
+        .allow(null)
     )
-    .optional()
-    .allow(null),
+    .required(),
   companyId: joi.string().trim().required(),
   formId: joi.string().trim().required(),
   queryParams: joi.object().optional().allow(null),
