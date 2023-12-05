@@ -17,7 +17,8 @@ const saveResponseSchema = joi.object({
         isUserText: joi.boolean().default(false),
       })
     )
-    .optional().allow(null),
+    .optional()
+    .allow(null),
   companyId: joi.string().trim().required(),
   formId: joi.string().trim().required(),
   queryParams: joi.object().optional().allow(null),
