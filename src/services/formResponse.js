@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
-const { FormResponse, GeneratedReview } = require('../models');
+const { FormResponse, Form, GeneratedReview } = require('../models');
 const { applicationLogger: log } = require('../../lib/logger');
-const formService = require('./form');
 const companyService = require('./company');
 const openaiClient = require('../../integrations/openai');
 const config = require('../../lib/config');
@@ -9,6 +8,26 @@ const config = require('../../lib/config');
 function camelCaseToWords(s) {
   const result = s.replace(/([A-Z])/g, ' $1');
   return result.charAt(0).toUpperCase() + result.slice(1);
+}
+
+async function getForm({ formId }) {
+  const form = await Form.findOne({
+    where: { formId },
+    raw: true,
+  });
+  if (!form) {
+    return form;
+  }
+
+  delete form.id;
+
+  if (form.formContent) {
+    form.formContent = JSON.parse(form.formContent.toString());
+  }
+  if (form.formTheme) {
+    form.formTheme = JSON.parse(form.formTheme.toString());
+  }
+  return form;
 }
 
 async function saveFormResponse(payload = {}) {
@@ -177,7 +196,7 @@ async function saveGeneratedReview(responseId) {
       throw new Error(`Invalid responseId: ${responseId}`);
     }
     const { formId } = formResponse;
-    const form = await formService.getForm({ formId });
+    const form = await getForm({ formId });
     if (!form) {
       throw new Error(`Invalid formId: ${formId}`);
     }
