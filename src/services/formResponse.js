@@ -37,6 +37,7 @@ async function saveFormResponse(payload = {}) {
     companyId: payload.companyId,
     review: JSON.stringify(payload.responses),
     queryParams: payload.queryParams ? JSON.stringify(payload.queryParams) : {},
+    generateReview: payload.generateReview,
   };
   await FormResponse.create(newForm);
   return newForm.responseId;
