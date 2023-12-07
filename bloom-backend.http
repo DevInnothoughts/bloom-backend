@@ -1,11 +1,9 @@
 # rta-svc
 
-@apiurl = http://localhost:8090
-# @apiurl = https://rta-svc.beta.zerodhafundhouse.com
-# @apiurl = https://rta-svc.prod.zerodhafundhouse.com
+@apiurl = http://localhost:3001
 @version = v2
 @webServerToken = Bearer XXXX.YYYY.ZZZZ
-@userToken = Bearer XXXX.YYYY.ZZZZ
+@userToken = Bearer XXXX.UUUU.ZZZZ
 
 ###
 # @name Health check
@@ -101,8 +99,6 @@ Content-Type: application/json
 }
 
 ###
-<<<<<<< HEAD
-=======
 # @name Create Company
 POST {{apiurl}}/{{version}}/api/company/v1/create
 Content-Type: application/json
@@ -121,7 +117,6 @@ GET {{apiurl}}/{{version}}/api/company/v1/get?companyId=d349dd11-3d2d-47b0-9c1b-
 GET {{apiurl}}/{{version}}/api/company/v1/getByUserId?userId=198fd645-6fc6-449e-aa16-8f715d29e42b
 
 ###
->>>>>>> a6d1735e43a2c76dd8cc801155439b0680f153b5
 # @name Save form response
 POST {{apiurl}}/{{version}}/api/formResponse/v1/create
 Content-Type: application/json
@@ -154,4 +149,5 @@ GET {{apiurl}}/{{version}}/api/formResponse/v1/review?responseId=73ee901a-3416-4
 
 ###
 # @name Get All Responses
-GET {{apiurl}}/{{version}}/api/formResponse/v1/getAll?formId=U7QJMW4J&pageSize=10&pageNo=1
+GET {{apiurl}}/{{version}}/api/formResponse/v1/getAll?formId=JE8ATO6S&pageSize=10&pageNo=0
+Authorization: {{userToken}}

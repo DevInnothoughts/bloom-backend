@@ -76,6 +76,7 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
 
     response.responseId = row.responseId;
     response.createdAt = row.createdAt;
+    response.generateReview = row.generateReview;
 
     const questions = Object.keys(row.review);
 
@@ -121,6 +122,10 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
   }
   mapping.set('createdAt', {
     title: 'Created At',
+    type: 'metaData',
+  });
+  mapping.set('generatedReview', {
+    title: 'Generated Review',
     type: 'metaData',
   });
   const formResponses = {

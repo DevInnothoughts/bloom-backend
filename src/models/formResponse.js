@@ -30,6 +30,12 @@ const FormResponse = db.define(
       type: DataTypes.BLOB,
       field: 'query_params',
     },
+    generateReview: {
+      type: DataTypes.BOOLEAN,
+      field: 'generate_review',
+      allowNull: false,
+      defaultValue: false,
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at',

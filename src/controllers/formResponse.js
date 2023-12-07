@@ -27,6 +27,7 @@ const saveResponseSchema = joi.object({
   companyId: joi.string().trim().required(),
   formId: joi.string().trim().required(),
   queryParams: joi.object().optional().allow(null),
+  generateReview: joi.boolean().default(false),
 });
 
 const getGeneratedReviewSchema = joi.object({
@@ -46,6 +47,7 @@ async function saveResponse(req) {
       companyId: req.body.companyId,
       queryParams: req.body.queryParams,
       formId: req.body.formId,
+      generateReview: req.body.generateReview,
     });
   if (invalidRequest) {
     throw new generalExceptions.ValidationError(
@@ -55,7 +57,9 @@ async function saveResponse(req) {
   }
   const responseId =
     await formResponseService.saveFormResponse(validRequestData);
-  formResponseService.saveGeneratedReview(responseId);
+
+  if (validRequestData.generateReview)
+    formResponseService.saveGeneratedReview(responseId);
   return responseId;
 }
 
@@ -104,7 +108,7 @@ async function getAllFormResponses(req) {
     };
   }
   if (form.userId !== req.user.id) {
-    return generalExceptions.PermissionDenied(
+    throw new generalExceptions.PermissionDenied(
       'Form not avaiable for logged in user'
     );
   }
