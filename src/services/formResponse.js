@@ -53,12 +53,13 @@ async function saveFormResponse(payload = {}) {
 
 // latest = sort by created at, sort order DESC
 // filters generated_review = true, response_id <> latest saved response_id
-async function getPastGeneratedReviews({ limit, responseIdNe }) {
+async function getPastGeneratedReviews({ limit, responseIdNe, formId }) {
   const formResponses = await FormResponse.findAll({
     raw: true,
     where: {
-      [Op.ne]: responseIdNe,
+      responseId: { [Op.ne]: responseIdNe },
       generateReview: true,
+      formId,
     },
     order: [['created_at', 'DESC']],
     limit,
@@ -224,10 +225,9 @@ function convertUserReviewToPrompt(review, pastReviews = []) {
     ]
   }`;
   if (pastReviews.length > 0) {
-    prompt +=
-      '\n- Do NOT use the same adjectives & ensure the final review sounds different from the following 3 user reviews delimited in <Review> tag:';
+    prompt += `\n- Do NOT use the same adjectives & ensure the final review sounds different from the following ${pastReviews.length} user reviews delimited in <Review> tag:`;
     prompt += '\n<Review>';
-    prompt += pastReviews.join('</Review>\n<Review>');
+    prompt += pastReviews.join('</Review>\n\n<Review>');
     prompt += '\n</Review>';
   }
   prompt += `\n- Find the user response delimited in the <Response> tag below\n<Response>\n${userResponse}</Response>`;
@@ -259,6 +259,7 @@ async function saveGeneratedReview({ responseId, formId, review }) {
     const pastGeneratedReviews = await getPastGeneratedReviews({
       limit: 3,
       responseIdNe: responseId,
+      formId,
     });
     log.info(pastGeneratedReviews);
     const userPrompt = convertUserReviewToPrompt(review, pastGeneratedReviews);
