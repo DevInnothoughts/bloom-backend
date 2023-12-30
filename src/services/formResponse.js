@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const { FormResponse, Form, GeneratedReview } = require('../models');
+const { Op } = require('sequelize');
 const { applicationLogger: log } = require('../../lib/logger');
 const companyService = require('./company');
 const openaiClient = require('../../integrations/openai');
@@ -48,6 +49,36 @@ function getFormResponse({ responseId }) {
     where: { responseId },
     raw: true,
   });
+}
+
+// latest = sort by created at, sort order DESC
+// filters generated_review = true, response_id <> latest saved response_id
+async function getLatestGeneratedReviews({ limit, responseIdNe }) {
+  const formResponses = await FormResponse.findAll({
+    raw: true,
+    where: {
+      [Op.ne]: responseIdNe,
+      generateReview: true,
+    },
+    order: [['created_at', 'DESC']],
+    limit,
+  });
+  const latestGeneratedReviews = [];
+  for (const resp of formResponses) {
+    const generatedReview = await GeneratedReview.findOne({
+      raw: true,
+      where: {
+        responseId: resp.responseId,
+      },
+    });
+    if (generatedReview && generatedReview.vendorResponse) {
+      const vendorResp = JSON.parse(generatedReview.vendorResponse.toString());
+      if (vendorResp.length > 0) {
+        latestGeneratedReviews.push(vendorResp[0].message.content);
+      }
+    }
+  }
+  return latestGeneratedReviews;
 }
 
 function getFormResponseCount({ formId }) {
@@ -184,7 +215,7 @@ function convertUserReviewToPrompt(reviewBuffer) {
     }
     userResponse += '\n';
   }
-  const promptPrefix = config.openai.userPromptPrefex;
+  const promptPrefix = config.openai.userPromptPrefix;
   const prompt = `${promptPrefix}<Response>\n${userResponse}</Response>\n`;
   return prompt;
 }
@@ -211,11 +242,16 @@ async function saveGeneratedReview(responseId) {
     if (!company) {
       throw new Error(`Invalid company: ${companyId}`);
     }
+    const latestGeneratedReviews = await getLatestGeneratedReviews({
+      limit: 3,
+      responseIdNe: responseId,
+    });
+    log.info(latestGeneratedReviews);
     const userPrompt = convertUserReviewToPrompt(formResponse.review);
     const systemPrompt = getSystemPrompt(company, form);
     const prompts = [
-      { role: 'user', content: userPrompt },
       { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt },
     ];
     log.info(userPrompt);
     log.info(systemPrompt);
