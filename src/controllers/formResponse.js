@@ -59,7 +59,11 @@ async function saveResponse(req) {
     await formResponseService.saveFormResponse(validRequestData);
 
   if (validRequestData.generateReview)
-    formResponseService.saveGeneratedReview(responseId);
+    formResponseService.saveGeneratedReview({
+      responseId,
+      formId: validRequestData.formId,
+      review: validRequestData.responses,
+    });
   return responseId;
 }
 

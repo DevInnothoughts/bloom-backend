@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
-const { FormResponse, Form, GeneratedReview } = require('../models');
 const { Op } = require('sequelize');
+const { FormResponse, Form, GeneratedReview } = require('../models');
 const { applicationLogger: log } = require('../../lib/logger');
 const companyService = require('./company');
 const openaiClient = require('../../integrations/openai');
@@ -41,19 +41,19 @@ async function saveFormResponse(payload = {}) {
     generateReview: payload.generateReview,
   };
   await FormResponse.create(newForm);
-  return newForm.responseId;
+  return newForm.responseId; // TODO: Can return newForm to save 1 find query
 }
 
-function getFormResponse({ responseId }) {
-  return FormResponse.findOne({
-    where: { responseId },
-    raw: true,
-  });
-}
+// function getFormResponse({ responseId }) {
+//   return FormResponse.findOne({
+//     where: { responseId },
+//     raw: true,
+//   });
+// }
 
 // latest = sort by created at, sort order DESC
 // filters generated_review = true, response_id <> latest saved response_id
-async function getLatestGeneratedReviews({ limit, responseIdNe }) {
+async function getPastGeneratedReviews({ limit, responseIdNe }) {
   const formResponses = await FormResponse.findAll({
     raw: true,
     where: {
@@ -65,6 +65,7 @@ async function getLatestGeneratedReviews({ limit, responseIdNe }) {
   });
   const latestGeneratedReviews = [];
   for (const resp of formResponses) {
+    // eslint-disable-next-line no-await-in-loop
     const generatedReview = await GeneratedReview.findOne({
       raw: true,
       where: {
@@ -170,11 +171,11 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
   return formResponses;
 }
 
-function convertUserReviewToPrompt(reviewBuffer) {
-  if (!reviewBuffer) {
-    throw new Error('User review not present');
-  }
-  const review = JSON.parse(reviewBuffer.toString());
+function convertUserReviewToPrompt(review, pastReviews = []) {
+  // if (!reviewBuffer) {
+  //   throw new Error('User review not present');
+  // }
+  // const review = JSON.parse(reviewBuffer.toString());
   // questionId: joi.string().trim(),
   // questionTitle: joi.string().trim(),
   // questionSubtitle: joi.string().trim(),
@@ -216,7 +217,20 @@ function convertUserReviewToPrompt(reviewBuffer) {
     userResponse += '\n';
   }
   const promptPrefix = config.openai.userPromptPrefix;
-  const prompt = `${promptPrefix}<Response>\n${userResponse}</Response>\n`;
+  let prompt = promptPrefix;
+  prompt += `\n- Keep the tone of the review to be ${
+    config.openai.availableTones[
+      Math.floor(Math.random() * config.openai.availableTones.length)
+    ]
+  }`;
+  if (pastReviews.length > 0) {
+    prompt +=
+      '\n- Do NOT use the same adjectives & ensure the final review sounds different from the following 3 user reviews delimited in <Review> tag:';
+    prompt += '\n<Review>';
+    prompt += pastReviews.join('</Review>\n<Review>');
+    prompt += '\n</Review>';
+  }
+  prompt += `\n- Find the user response delimited in the <Response> tag below\n<Response>\n${userResponse}</Response>`;
   return prompt;
 }
 
@@ -226,13 +240,13 @@ function getSystemPrompt(company = {}, form = {}) {
   return prompt;
 }
 
-async function saveGeneratedReview(responseId) {
+async function saveGeneratedReview({ responseId, formId, review }) {
   try {
-    const formResponse = await getFormResponse({ responseId });
-    if (!formResponse) {
-      throw new Error(`Invalid responseId: ${responseId}`);
-    }
-    const { formId } = formResponse;
+    // const formResponse = await getFormResponse({ responseId });
+    // if (!formResponse) {
+    //   throw new Error(`Invalid responseId: ${responseId}`);
+    // }
+    // const { formId } = formResponse;
     const form = await getForm({ formId });
     if (!form) {
       throw new Error(`Invalid formId: ${formId}`);
@@ -242,12 +256,12 @@ async function saveGeneratedReview(responseId) {
     if (!company) {
       throw new Error(`Invalid company: ${companyId}`);
     }
-    const latestGeneratedReviews = await getLatestGeneratedReviews({
+    const pastGeneratedReviews = await getPastGeneratedReviews({
       limit: 3,
       responseIdNe: responseId,
     });
-    log.info(latestGeneratedReviews);
-    const userPrompt = convertUserReviewToPrompt(formResponse.review);
+    log.info(pastGeneratedReviews);
+    const userPrompt = convertUserReviewToPrompt(review, pastGeneratedReviews);
     const systemPrompt = getSystemPrompt(company, form);
     const prompts = [
       { role: 'system', content: systemPrompt },
