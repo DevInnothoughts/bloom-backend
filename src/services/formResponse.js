@@ -13,7 +13,7 @@ function camelCaseToWords(s) {
 
 async function getForm({ formId }) {
   const form = await Form.findOne({
-    where: { formId },
+    where: { formId, active: true },
     raw: true,
   });
   if (!form) {
@@ -158,7 +158,7 @@ async function getAllFormResponses({ formId, pageSize, pageNo }) {
     title: 'Created At',
     type: 'metaData',
   });
-  mapping.set('generatedReview', {
+  mapping.set('generateReview', {
     title: 'Generated Review',
     type: 'metaData',
   });
@@ -197,6 +197,15 @@ function convertUserReviewToPrompt(review, pastReviews = []) {
       continue;
     }
     if ((!r.responses || r.responses.length === 0) && !r.rating) {
+      /* eslint-disable no-continue */
+      continue;
+    }
+    // Exclude Known & Unknown PII Information From Prompt
+    if (
+      r.excludeFromPrompt ||
+      r.inputType === 'number' ||
+      r.inputType === 'email'
+    ) {
       /* eslint-disable no-continue */
       continue;
     }

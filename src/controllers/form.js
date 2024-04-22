@@ -21,6 +21,14 @@ const getFormSchema = joi.object({
   formId: joi.string().trim().required(),
 });
 
+const duplicateFormSchema = joi.object({
+  formId: joi.string().trim().required(),
+});
+
+const deleteFormSchema = joi.object({
+  formId: joi.string().trim().required(),
+});
+
 const getFormsSchema = joi.object({
   companyId: joi.string().trim().required(),
 });
@@ -104,9 +112,42 @@ async function getForms(req) {
   return formService.getForms(req.user, validRequestData);
 }
 
+async function duplicateForm(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    duplicateFormSchema.validate(req.body, { stripUnknown: true });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_0020',
+      invalidRequest.message
+    );
+  }
+
+  const newForm = await formService.duplicateForm({
+    formId: validRequestData.formId,
+  });
+  return newForm.formId;
+}
+
+async function deleteForm(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    deleteFormSchema.validate(req.body, { stripUnknown: true });
+  if (invalidRequest) {
+    throw new generalExceptions.ValidationError(
+      'BLAPI_0021',
+      invalidRequest.message
+    );
+  }
+  await formService.updateForm(req.user, {
+    active: false,
+    formId: validRequestData.formId,
+  });
+}
+
 module.exports = {
   initForm,
   updateForm,
   getForm,
   getForms,
+  duplicateForm,
+  deleteForm,
 };
