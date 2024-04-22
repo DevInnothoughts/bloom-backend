@@ -19,6 +19,8 @@ const saveResponseSchema = joi.object({
             .allow(null),
           rating: joi.number(),
           isUserText: joi.boolean().default(false),
+          excludeFromPrompt: joi.boolean().allow(null),
+          inputType: joi.string().trim().allow('', null),
         })
         .optional()
         .allow(null)

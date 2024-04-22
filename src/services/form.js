@@ -36,6 +36,9 @@ async function updateForm(user = {}, payload = {}) {
   if (payload.formTheme) {
     updates.formTheme = JSON.stringify(payload.formTheme);
   }
+  if (typeof payload.active === 'boolean') {
+    updates.active = payload.active;
+  }
   if (Object.keys(updates).length > 0) {
     await Form.update(updates, {
       where: { formId: payload.formId, userId: user.id },
@@ -45,7 +48,7 @@ async function updateForm(user = {}, payload = {}) {
 
 async function getForm({ formId }) {
   const form = await Form.findOne({
-    where: { formId },
+    where: { formId, active: true },
     raw: true,
   });
   if (!form) {
@@ -65,7 +68,7 @@ async function getForm({ formId }) {
 
 async function getForms(user, { companyId }) {
   const forms = await Form.findAll({
-    where: { userId: user.id, companyId },
+    where: { userId: user.id, companyId, active: true },
     raw: true,
   });
   for (const form of forms) {
@@ -83,9 +86,33 @@ async function getForms(user, { companyId }) {
   return forms;
 }
 
+async function duplicateForm({ formId }) {
+  const sourceForm = await getForm({ formId });
+  if (!sourceForm) {
+    throw new Error(`form not found for duplication: ${formId}`);
+  }
+  const newFormId = nanoid(8);
+  const newForm = {
+    ...sourceForm,
+    formName: `Copy of ${sourceForm.formName}`,
+    formId: newFormId,
+    formContent: sourceForm.formContent
+      ? JSON.stringify(sourceForm.formContent)
+      : null,
+    formTheme: sourceForm.formTheme
+      ? JSON.stringify(sourceForm.formTheme)
+      : null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+  await Form.create(newForm);
+  return newForm;
+}
+
 module.exports = {
   initForm,
   updateForm,
   getForm,
   getForms,
+  duplicateForm,
 };

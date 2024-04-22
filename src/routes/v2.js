@@ -43,6 +43,16 @@ formRouter.get(
   expressRoute(verifyUserToken),
   expressRoute(formController.getForms)
 );
+formRouter.post(
+  '/v1/duplicate',
+  expressRoute(verifyUserToken),
+  expressRoute(formController.duplicateForm)
+);
+formRouter.post(
+  '/v1/delete',
+  expressRoute(verifyUserToken),
+  expressRoute(formController.deleteForm)
+);
 r.use('/api/form', formRouter);
 
 const leadRouter = express.Router();

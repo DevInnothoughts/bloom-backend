@@ -53,6 +53,10 @@ const Form = db.define(
       type: DataTypes.BLOB,
       field: 'form_theme',
     },
+    active: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       field: 'created_at',
