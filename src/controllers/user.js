@@ -1,8 +1,13 @@
+/* eslint-disable prettier/prettier */
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
 const { userService } = require('../services');
 
 const getUserSchema = joi.object({
+  emailId: joi.string().trim().required(),
+});
+
+const getUserDataSchema = joi.object({
   emailId: joi.string().trim().required(),
 });
 
@@ -35,6 +40,24 @@ async function getUser(req) {
   return user || {};
 }
 
+async function getUserData(req) {
+  const { value: validRequestData, error: invalidRequest } =
+    getUserDataSchema.validate({
+      emailId: req.query.emailId,
+    });
+  if (invalidRequest) {
+    console.log('INVALID REQ:', invalidRequest);
+    throw new generalExceptions.ValidationError(
+      'BLAPI_0001',
+      invalidRequest.message
+    );
+  }
+  const user = await userService.getUserData({
+    emailId: validRequestData.emailId,
+  });
+  return user || {};
+}
+
 async function createOrUpdateUser(req) {
   const { value: validRequestData, error: invalidRequest } =
     createOrUpdateUserSchema.validate({
@@ -61,5 +84,6 @@ async function createOrUpdateUser(req) {
 
 module.exports = {
   getUser,
+  getUserData,
   createOrUpdateUser,
 };

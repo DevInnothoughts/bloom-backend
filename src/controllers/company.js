@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const joi = require('joi');
 const generalExceptions = require('../../lib/generalExceptions');
 const { companyService, companyUserService } = require('../services');
@@ -53,6 +54,13 @@ async function getCompanyByUserId(req) {
   return company || {};
 }
 
+async function getAllCompaniesFromUserID(req) {
+  const company = await companyUserService.getAllCompaniesFromUserID({
+    userId: req.user.id,
+  });
+  return company || [];
+}
+
 function createOrUpdateCompany(req) {
   const { value: validRequestData, error: invalidRequest } =
     createOrUpdateCompanySchema.validate({
@@ -73,4 +81,5 @@ module.exports = {
   getCompany,
   createOrUpdateCompany,
   getCompanyByUserId,
+  getAllCompaniesFromUserID,
 };

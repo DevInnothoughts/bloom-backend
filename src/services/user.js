@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const { v4: uuidv4 } = require('uuid');
 const { User } = require('../models');
 const companyUserService = require('./companyUser');
@@ -21,6 +22,15 @@ async function getUser({ emailId }) {
     }
   }
 
+  return user;
+}
+
+async function getUserData({ emailId }) {
+  const user = await User.findOne({
+    where: { emailId },
+    raw: true,
+  });
+  console.log(user);
   return user;
 }
 
@@ -50,5 +60,6 @@ async function createUser(payload) {
 
 module.exports = {
   getUser,
+  getUserData,
   createUser,
 };

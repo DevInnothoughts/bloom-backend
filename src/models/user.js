@@ -43,6 +43,12 @@ const User = db.define(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    isMultiCompanyAllowed: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_multi_company_allowed',
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     tableName: 'user',

@@ -18,6 +18,11 @@ userRouter.get(
   expressRoute(verifyWebServerToken),
   expressRoute(userController.getUser)
 );
+userRouter.get(
+  '/v1/getUserData',
+  expressRoute(verifyUserToken),
+  expressRoute(userController.getUserData)
+);
 userRouter.post(
   '/v1/create',
   expressRoute(verifyWebServerToken),
@@ -70,6 +75,11 @@ companyRouter.get(
   '/v1/getByUserId',
   expressRoute(verifyUserToken),
   expressRoute(companyController.getCompanyByUserId)
+);
+companyRouter.get(
+  '/v1/getAllByUserId',
+  expressRoute(verifyUserToken),
+  expressRoute(companyController.getAllCompaniesFromUserID)
 );
 companyRouter.post(
   '/v1/create',
