@@ -114,3 +114,41 @@ userPromptPrefix: `Follow the instructions very strictly:
     \n- Break the review in 1 or 2 paragraphs where necessary.
     \n- Keep the review length between 10 to 70 words.`,
 },
+
+# Live .env file
+
+export APPLICATION_NAME='bloom-backend'
+export PORT='3001'
+export NODE_ENV='production'
+export ENVIRONMENT='prod'
+export DB_HOST='bloom-mysql-do-user-14415900-0.b.db.ondigitalocean.com'
+export DB_URL='bloom-mysql-do-user-14415900-0.b.db.ondigitalocean.com'
+export DB_NAME='user_db'
+export DB_USER='doadmin'
+export DB_PASSWORD='AVNS_nQ4CgD2pSHqu6okWkSz'
+export DB_PORT='25060'
+export DB_DIALECT='mysql'
+export APP_URLS='https://bloomapi.in,http://localhost:3000'
+export OPENAI_API_URL='https://api.openai.com'
+export OPENAI_API_KEY='sk-proj-XqdwYIu9kXkKN27Hu8U0T3BlbkFJjKh7HoIySXTrODjXJaq0'
+export USER_API_SECRET='64hn1Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY='
+export WEB_SERVER_SECRET='Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY64hn1='
+
+# Local .env file
+
+export APPLICATION_NAME='bloom-backend'
+export PORT='3001'
+export NODE_ENV='local'
+export ENVIRONMENT='local'
+export DB_HOST='127.0.0.1'
+export DB_URL='127.0.0.1'
+export DB_NAME='bloomlocaldb'
+export DB_USER='bloom-user'
+export DB_PASSWORD='bloompassword123@'
+export DB_PORT='3306'
+export DB_DIALECT='mysql'
+export APP_URLS='https://bloomapi.in,http://localhost:3000,https://thebariatricsurgeon.com'
+export OPENAI_API_URL='https://api.openai.com'
+export OPENAI_API_KEY='sk-proj-XqdwYIu9kXkKN27Hu8U0T3BlbkFJjKh7HoIySXTrODjXJaq0'
+export USER_API_SECRET='64hn1Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY='
+export WEB_SERVER_SECRET='Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY64hn1='
