@@ -149,6 +149,8 @@ export DB_PORT='3306'
 export DB_DIALECT='mysql'
 export APP_URLS='https://bloomapi.in,http://localhost:3000,https://thebariatricsurgeon.com'
 export OPENAI_API_URL='https://api.openai.com'
-export OPENAI_API_KEY='sk-proj-XqdwYIu9kXkKN27Hu8U0T3BlbkFJjKh7HoIySXTrODjXJaq0'
+export OPENAI_API_KEY=
 export USER_API_SECRET='64hn1Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY='
 export WEB_SERVER_SECRET='Pb84kAagmtPlEjeVe2KCrMudiWJOdOpv4mVDfY64hn1='
+
+OLD API Key: sk-proj-XqdwYIu9kXkKN27Hu8U0T3BlbkFJjKh7HoIySXTrODjXJaq0
